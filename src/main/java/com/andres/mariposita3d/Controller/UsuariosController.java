@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.andres.mariposita3d.Collection.Usuario;
-import com.andres.mariposita3d.Service.IUsuarioService;
+import com.andres.mariposita3d.IService.IUsuarioService;
 
 @CrossOrigin(origins = "*")
 @RestController

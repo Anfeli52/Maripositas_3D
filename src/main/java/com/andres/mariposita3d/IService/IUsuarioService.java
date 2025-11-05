@@ -1,5 +1,5 @@
 // IUsuarioService.java
-package com.andres.mariposita3d.Service;
+package com.andres.mariposita3d.IService;
 
 import java.util.List;
 import java.util.Optional;
