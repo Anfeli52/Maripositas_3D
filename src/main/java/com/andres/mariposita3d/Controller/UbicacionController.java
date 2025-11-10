@@ -13,7 +13,7 @@ import com.andres.mariposita3d.IService.IUbicacionService;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/ubicaciones")
-public class UbicacionesController {
+public class UbicacionController {
 
     @Autowired
     private IUbicacionService service;
