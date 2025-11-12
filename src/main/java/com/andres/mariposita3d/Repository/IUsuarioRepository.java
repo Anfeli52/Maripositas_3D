@@ -5,4 +5,5 @@ import com.andres.mariposita3d.Collection.Usuario;
 
 public interface IUsuarioRepository extends MongoRepository<Usuario, String> {
 
+    Usuario findByCorreo(String correo);
 }

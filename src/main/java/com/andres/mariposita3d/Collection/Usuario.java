@@ -1,24 +1,33 @@
 package com.andres.mariposita3d.Collection;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Document("usuario")
-public class Usuario {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Document("usuarios")
+public class Usuario implements UserDetails {
 
     @Id
     private String id;
 
-    @Field("nombre")
     private String nombre;
 
     @Field("correo")
     private String correo;
 
-    @Field("rol")
     private String rol;
 
     @Field("contrasena")
@@ -27,51 +36,32 @@ public class Usuario {
     @Field("fecha_registro")
     private Date fechaRegistro;
 
-    public String getId() {
-        return id;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + rol.toUpperCase()));
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public String getPassword() {
+        return this.contrasena;
     }
 
-    public String getNombre() {
-        return nombre;
+    @Override
+    public String getUsername() {
+        return this.correo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    @Override
+    public boolean isAccountNonExpired() { return true; }
 
-    public String getCorreo() {
-        return correo;
-    }
+    @Override
+    public boolean isAccountNonLocked() { return true; }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
 
-    public String getRol() {
-        return rol;
-    }
+    @Override
+    public boolean isEnabled() { return true; }
 
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
 }
