@@ -28,7 +28,6 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario save(Usuario usuario) {
-        // Implementación simple: guarda tal cual (sin hashing)
         return repository.save(usuario);
     }
 

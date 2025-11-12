@@ -34,8 +34,6 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
-
-                // 2. Configuración del Formulario de Login
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -59,6 +57,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder(); // ¡Usar el codificador seguro!
     }
 }
