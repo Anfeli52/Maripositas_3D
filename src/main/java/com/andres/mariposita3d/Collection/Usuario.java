@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("usuarios")
+@Document("usuario")
 public class Usuario implements UserDetails {
 
     @Id

@@ -16,10 +16,14 @@ public class UsuarioDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("[DEBUG] loadUserByUsername called with email='" + email + "'");
         Usuario usuario = usuarioRepository.findByCorreo(email);
         if(usuario == null){
+            System.out.println("[DEBUG] usuarioRepository.findByCorreo returned null for email='" + email + "'");
             throw new UsernameNotFoundException("Usuario no encontrado");
         }
+        System.out.println("[DEBUG] Found usuario with correo='" + usuario.getCorreo() + "', id='" + usuario.getId() + "', rol='" + usuario.getRol() + "'");
+        // For safety, avoid logging the password in production
         return usuario;
     }
 }
