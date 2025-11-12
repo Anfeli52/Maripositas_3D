@@ -57,6 +57,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // ¡Usar el codificador seguro!
+        // Durante pruebas locales usamos NoOp (contraseñas en texto plano en la DB).
+        // No usar en producción: revertir a BCryptPasswordEncoder y almacenar contraseñas hashed.
+        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
     }
 }
