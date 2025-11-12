@@ -22,7 +22,7 @@ import com.andres.mariposita3d.IService.IUsuarioService;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/usuario")
-public class UsuarioController {
+public class UsuariosController {
 
     @Autowired
     private IUsuarioService service;
