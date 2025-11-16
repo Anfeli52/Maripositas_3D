@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
+    <link rel="stylesheet" th:href="@{/CSS/usersManagement.css}">
+    <title>Document</title>
+</head>
+<body>
+    <nav th:replace="~{Admin/fragment_admin :: adminNavbar}"></nav>
+    <section class="users-section">
+        <table class="users-table">
+            <h1>Tabla de Usuarios</h1>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}">1</td>
+                    <td th:text="${user.nombre}">Nombre</td>
+                    <td th:text="${user.correo}">Email</td>
+                    <td th:text="${user.rol}">Rol</td>
+                    <td>
+                        <button class="edit-btn">Editar</button>
+                        <button class="delete-btn">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>

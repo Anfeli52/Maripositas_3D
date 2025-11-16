@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+:root{
+    --nav-padding-y: 20px;
+    --nav-padding-x: 100px;
+    --nav-gap: 30px;
+    --radius-md: .45rem;
+    --shadow-nav: 0 5px 10px rgba(0,0,0,0.1);
+    --shadow-btn: 0 2px 6px -1px #00000050;
+    --avatar-size: 38px;
+}
+
+html{ box-sizing: border-box; }
+*,*::before,*::after{ box-sizing: inherit; }
+
+body{
+    min-height: 100vh;
+    font-family: 'Poppins',sans-serif;
+}
+
+.navbar{
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    padding: var(--nav-padding-y) var(--nav-padding-x);
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: var(--shadow-nav);
+}
+
+.nav-list{
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    gap: var(--nav-gap);
+}
+
+.nav-list .nav-item a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: .5rem .9rem;
+    border-radius: var(--radius-md);
+    transition: background .2s, color .2s;
+}
+
+.nav-list .nav-item a:hover{
+    background: #374151;
+    color: #fff;
+}
+
+.user-cluster{
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+}
+
+.avatar{
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    border-radius: 50%;
+    background: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: .95rem;
+    box-shadow: 0 0 0 2px #ffffff22;
+}
+
+.user-texts{
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.user-name{
+    font-size: .9rem;
+    letter-spacing: .5px;
+}
+
+.role{
+    font-size: .65rem;
+    text-transform: uppercase;
+    opacity: .7;
+    letter-spacing: 1px;
+}
+
+.nav-list .nav-item .logout-btn{
+    margin-left: 1rem;
+    padding: .5rem .9rem;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-decoration: none;
+    color: #fff;
+    background: #ef4444;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-btn);
+    transition: background .15s, transform .15s;
+}
+
+.nav-list .nav-item .logout-btn:hover{
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce){
+    .nav-list .nav-item a,
+    .logout-btn{
+        transition: none !important;
+    }
+    .logout-btn:hover{
+        transform: none !important;
+    }
+}

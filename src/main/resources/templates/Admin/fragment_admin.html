@@ -1,0 +1,26 @@
+<nav class="navbar" th:fragment="adminNavbar">
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a th:href="@{/admin/main}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a th:href="@{/admin/users}">Users</a>
+        </li>
+        <li class="nav-item">
+            <a href="#">Settings</a>
+        </li>
+        <li class="nav-item">
+            <a href="#">Reports</a>
+        </li>
+    </ul>
+    <ul class="nav-list right">
+        <li class="nav-item user-cluster">
+            <div class="avatar" th:text="${#strings.toUpperCase(#strings.substring(#authentication.principal.nombre, 0, 1))}">A</div>
+            <div class="user-texts">
+                <b class="user-name" sec:authentication="principal.nombre">Admin</b>
+                <span class="role">Administrator</span>
+            </div>
+            <a class="logout-btn" href="/logout" aria-label="Cerrar sesión">Logout</a>
+        </li>
+    </ul>
+</nav>
