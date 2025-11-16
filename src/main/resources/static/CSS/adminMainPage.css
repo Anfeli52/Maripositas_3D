@@ -1,0 +1,178 @@
+:root{
+    --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
+    --radius-md: .45rem;
+    --shadow-nav: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.buttlerflys-section{
+    margin-top: var(--navbar-offset);
+    padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
+}
+
+.buttlerflys-section h1{
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+    color: #333;
+    letter-spacing: .5px;
+}
+
+.buttlerflys-table{
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-nav);
+    overflow: hidden;
+}
+
+.buttlerflys-table th,
+.buttlerflys-table td{
+    padding: .75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.buttlerflys-table thead th{
+    font-weight: 600;
+    color: #333;
+    background: #f9fafb;
+}
+
+.buttlerflys-table tbody tr + tr td{
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.buttlerflys-table td:last-child{
+    width: 140px;
+    vertical-align: middle;
+}
+
+.buttlerflys-table td:last-child{
+    display: flex;
+    gap: .5rem;
+}
+
+.action-btn,
+.edit-btn,
+.delete-btn{
+    flex: 1 1 auto;
+    padding: .45rem .6rem;
+    font-size: .70rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    border: none;
+    border-radius: .35rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background .15s, transform .15s;
+    color: #fff;
+}
+
+.edit-btn{
+    background: #3b82f6;
+}
+
+.edit-btn:hover{
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.delete-btn{
+    background: #ef4444;
+}
+
+.delete-btn:hover{
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+.edit-btn:active,
+.delete-btn:active{
+    transform: translateY(0);
+}
+
+.buttlerflys-table img{
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: .35rem;
+    display: block;
+}
+
+@media (max-width: 780px){
+    .buttlerflys-section{
+        padding: var(--nav-padding-y, 20px) 16px;
+    }
+    .buttlerflys-table{
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .buttlerflys-table td:last-child{
+        min-width: 140px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .edit-btn,
+    .delete-btn{
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+.desc-scroll{
+    max-width: 220px;
+    max-height: 70px;
+    overflow-y: auto;
+    padding: 4px 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: .35rem;
+    font-size: .75rem;
+    line-height: 1.2;
+    background: #fff;
+    scrollbar-width: thin;
+}
+.desc-scroll::-webkit-scrollbar{
+    width: 6px;
+}
+.desc-scroll::-webkit-scrollbar-track{
+    background: transparent;
+}
+.desc-scroll::-webkit-scrollbar-thumb{
+    background: #ccc;
+    border-radius: 3px;
+}
+
+/* Botón de registro de mariposa */
+.register-buttlerfly-btn{
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.register-buttlerfly-btn a{
+    display: inline-block;
+    padding: .65rem 1.2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: .6px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: transform .15s, box-shadow .2s;
+}
+
+.register-buttlerfly-btn a:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.register-buttlerfly-btn a:active{
+    transform: translateY(0);
+}
