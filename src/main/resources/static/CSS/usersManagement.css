@@ -1,15 +1,12 @@
 :root{
-  --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
+    --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
 }
 
 .users-section{
-  /* que no quede oculto bajo el navbar */
     margin-top: var(--navbar-offset);
-  /* mismo padding horizontal que el navbar */
     padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
 }
 
-/* Tabla con mismo look (blanco + sombra + radio) */
 .users-table{
     width: 100%;
     border-collapse: collapse;
@@ -30,7 +27,6 @@
     border-top: 1px solid rgba(0,0,0,0.06);
 }
 
-/* Botones de acción */
 .edit-btn, .delete-btn{
     padding: .4rem .8rem;
     border: none;
@@ -42,7 +38,7 @@
     transition: background .2s, box-shadow .2s;
 }
 .edit-btn{
-    background: #3b82f6; /* azul */
+    background: #3b82f6;
     margin-right: .5rem;
 }
 .edit-btn:hover{
@@ -50,14 +46,13 @@
     box-shadow: 0 4px 12px -2px #00000050;
 }
 .delete-btn{
-    background: #ef4444; /* rojo */
+    background: #ef4444;
 }
 .delete-btn:hover{
     background: #b91c1c;
     box-shadow: 0 4px 12px -2px #00000050;
 }
 
-/* Responsive: reduce padding lateral y permite scroll horizontal si hace falta */
 @media (max-width: 780px){
     .users-section{
         padding: var(--nav-padding-y, 20px) 16px;

@@ -1,17 +1,22 @@
 package com.andres.mariposita3d.Controller;
 
-import com.andres.mariposita3d.Service.UsuarioService;
+import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
+import com.andres.mariposita3d.Service.EspecieMariposaService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
 public class ViewController {
 
-    private final UsuarioService userService;
+    private final EspecieMariposaService butterflyService;
 
-    public ViewController(UsuarioService userService) {this.userService = userService;}
+    public ViewController(EspecieMariposaService butterflyService) {
+        this.butterflyService = butterflyService;
+    }
 
     @GetMapping("/main")
     @PreAuthorize("hasRole('USER')")
@@ -21,14 +26,17 @@ public class ViewController {
 
     @GetMapping("/admin/main")
     @PreAuthorize("hasRole('ADMIN')")
-    public String adminMain(){
+    public String adminMain(Model model){
+        List<MariposaDetalleDTO> butterflyDetails = butterflyService.findAllWithUbicationDetails();
+        model.addAttribute("butterflies", butterflyDetails);
+
         return "Admin/adminMainPage";
     }
 
-    @GetMapping("/admin/users")
+    @GetMapping("/admin/registroMariposa")
     @PreAuthorize("hasRole('ADMIN')")
-    public String usersTable(Model model){
-        model.addAttribute("users", userService.all());
-        return "Admin/usersManagement";
+    public String registroMariposa(){
+        return "Admin/registroMariposa";
     }
+
 }

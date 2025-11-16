@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
+    <link rel="stylesheet" th:href="@{/CSS/registroMariposa.css}">
+    <title>Title</title>
+</head>
+<body>
+
+    <nav th:replace="~{Admin/fragment_admin :: adminNavbar}"></nav>
+    <section class="container">
+        <h1>Registro de Nueva Especie de Mariposa</h1>
+        
+        <form th:action="@{/admin/nueva-especie}" method="post" class="main-form">
+
+            <h2>1. Identificación y Descripción de la Especie</h2>
+            
+            <fieldset>
+                <legend>Información General</legend>
+                <label for="nombreCientifico">Nombre Científico (*):</label>
+                <input type="text" id="nombreCientifico" name="nombreCientifico" required>
+
+                <label for="nombreComun">Nombre Común (*):</label>
+                <input type="text" id="nombreComun" name="nombreComun" required>
+                
+                <label for="familia">Familia (*):</label>
+                <input type="text" id="familia" name="familia" required>
+                
+                <label for="tipoEspecie">Tipo de Especie (*):</label>
+                <select id="tipoEspecie" name="tipoEspecie" required>
+                    <option value="">-- Seleccione el tipo --</option>
+                    <option value="DIURNA">Diurna</option>
+                    <option value="NOCTURNA">Nocturna</option>
+                    <option option value="CREPUSCULAR">Crepuscular</option>
+                </select>
+                
+                <label for="descripcion">Descripción (*):</label>
+                <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            </fieldset>
+
+            <h3>Características Morfológicas</h3>
+            <fieldset>
+                <label for="color">Color Principal:</label>
+                <input type="text" id="color" name="caracteristicasMorfo.color">
+
+                <label for="tamanoAlas">Tamaño de Alas (Ej: 10-15 cm):</label>
+                <input type="text" id="tamanoAlas" name="caracteristicasMorfo.tamanoAlas">
+
+                <label for="formaAntenas">Forma de Antenas:</label>
+                <input type="text" id="formaAntenas" name="caracteristicasMorfo.formaAntenas">
+            </fieldset>
+            
+            <h2>2. Archivos Multimedia (URLs)</h2>
+            
+            <h3>Imágenes Generales (Array de URLs)</h3>
+            <fieldset>
+                <label for="imagen1">Imagen Principal (URL):</label>
+                <input type="url" id="imagen1" name="imagenes[0]" required>
+                
+                <label for="imagen2">Imagen Secundaria (URL):</label>
+                <input type="url" id="imagen2" name="imagenes[1]">
+
+                <label for="imagen3">Imagen Adicional (URL):</label>
+                <input type="url" id="imagen3" name="imagenes[2]">
+            </fieldset>
+
+            <h3>Imágenes Detalladas (Documento Anidado)</h3>
+            <fieldset>
+                <label for="alaIzquierda">URL Ala Izquierda:</label>
+                <input type="url" id="alaIzquierda" name="imagenesDetalladas.alaIzquierda">
+
+                <label for="alaDerecha">URL Ala Derecha:</label>
+                <input type="url" id="alaDerecha" name="imagenesDetalladas.alaDerecha">
+                
+                </fieldset>
+
+            <h2>3. Ubicación de Recolección</h2>
+            <fieldset>
+                <label for="pais">País (*):</label>
+                <input type="text" id="pais" name="ubicacion.pais" value="Colombia" required>
+                
+                <label for="departamento">Departamento (*):</label>
+                <input type="text" id="departamento" name="ubicacion.departamento" required>
+
+                <label for="municipio">Municipio (*):</label>
+                <input type="text" id="municipio" name="ubicacion.municipio" required>
+                
+                <label for="localidad">Localidad / Sitio Específico (*):</label>
+                <input type="text" id="localidad" name="ubicacion.localidad" required>
+                
+                <label for="ecosistema">Ecosistema:</label>
+                <input type="text" id="ecosistema" name="ubicacion.ecosistema">
+
+                <label for="latitud">Latitud (*):</label>
+                <input type="number" step="any" id="latitud" name="ubicacion.latitud" required>
+                
+                <label for="longitud">Longitud (*):</label>
+                <input type="number" step="any" id="longitud" name="ubicacion.longitud" required>
+            </fieldset>
+
+            <h2>4. Observación Inicial</h2>
+            <fieldset>
+                <label for="comentario">Comentario de la Primera Observación (*):</label>
+                <textarea id="comentario" name="observacion.comentario" rows="3" required></textarea>
+            </fieldset>
+
+            <div class="form-actions">
+                <button type="submit">Registrar Especie Completa</button>
+            </div>
+        </form>
+    </section>
+
+</body>
+</html>
