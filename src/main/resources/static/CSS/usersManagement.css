@@ -1,0 +1,70 @@
+:root{
+  --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
+}
+
+.users-section{
+  /* que no quede oculto bajo el navbar */
+    margin-top: var(--navbar-offset);
+  /* mismo padding horizontal que el navbar */
+    padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
+}
+
+/* Tabla con mismo look (blanco + sombra + radio) */
+.users-table{
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius-md, .45rem);
+    box-shadow: var(--shadow-nav, 0 5px 10px rgba(0,0,0,0.1));
+    overflow: hidden;
+}
+
+.users-table th,
+.users-table td{
+    padding: .75rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.users-table tbody tr + tr td{
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Botones de acción */
+.edit-btn, .delete-btn{
+    padding: .4rem .8rem;
+    border: none;
+    border-radius: var(--radius-md, .45rem);
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn, 0 2px 6px -1px #00000050);
+    transition: background .2s, box-shadow .2s;
+}
+.edit-btn{
+    background: #3b82f6; /* azul */
+    margin-right: .5rem;
+}
+.edit-btn:hover{
+    background: #2563eb;
+    box-shadow: 0 4px 12px -2px #00000050;
+}
+.delete-btn{
+    background: #ef4444; /* rojo */
+}
+.delete-btn:hover{
+    background: #b91c1c;
+    box-shadow: 0 4px 12px -2px #00000050;
+}
+
+/* Responsive: reduce padding lateral y permite scroll horizontal si hace falta */
+@media (max-width: 780px){
+    .users-section{
+        padding: var(--nav-padding-y, 20px) 16px;
+    }
+    .users-table{
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}

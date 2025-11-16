@@ -28,7 +28,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 redirectUrl = "/admin/main";
                 break;
             } else if (role.equals("ROLE_USER")) {
-                redirectUrl = "/user/main";
+                redirectUrl = "/main";
                 break;
             }
         }
