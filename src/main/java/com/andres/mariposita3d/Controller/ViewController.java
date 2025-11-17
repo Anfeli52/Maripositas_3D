@@ -20,7 +20,9 @@ public class ViewController {
 
     @GetMapping("/main")
     @PreAuthorize("hasRole('USER')")
-    public String userMain(){
+    public String userMain(Model model){
+        List<MariposaDetalleDTO> butterflyDetails = butterflyService.findAllWithUbicationDetails();
+        model.addAttribute("butterflies", butterflyDetails);
         return "User/userMainPage";
     }
 

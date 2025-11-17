@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<nav class="navbar" th:fragment="userNavbar">
+    <ul class="nav-list">
+        <li class="nav-item">
+            <a th:href="@{/main}">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a href="#">Settings</a>
+        </li>
+        <li class="nav-item">
+            <a href="#">Reports</a>
+        </li>
+    </ul>
+    <ul class="nav-list right">
+        <li class="nav-item user-cluster">
+            <div class="avatar" th:text="${#strings.toUpperCase(#strings.substring(#authentication.principal.nombre, 0, 1))}">A</div>
+            <div class="user-texts">
+                <b class="user-name" sec:authentication="principal.nombre">Usuario</b>
+                <span class="role">Usuario</span>
+            </div>
+            <a class="logout-btn" href="/logout" aria-label="Cerrar sesión">Logout</a>
+        </li>
+    </ul>
+</nav>

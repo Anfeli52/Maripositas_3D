@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
+    <link rel="stylesheet" th:href="@{/CSS/adminMainPage.css}">
     <title>Title</title>
 </head>
 <body>
-    <h1>Página de User</h1>
+    <nav th:replace="~{User/fragment_user :: userNavbar}"></nav>
+    <section class="buttlerflys-section">
+        <h1>Tabla de Mariposas Registradas</h1>
+
+        <table class="buttlerflys-table">
+            <thead>
+                <tr>
+                    <th>Nombre Científico</th>
+                    <th>Nombre Común</th>
+                    <th>Familia</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    <th>Localidad</th>
+                    <th>Descripción</th>
+                    <!-- <th>Imagen</th> -->
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="butterfly : ${butterflies}">
+                    <td th:text="${butterfly.nombreCientifico}">Nombre Científico</td>
+                    <td th:text="${butterfly.nombreComun}">Nombre Común</td>
+                    <td th:text="${butterfly.familia}">Familia</td>
+                    <td th:text="${butterfly.departamento}">Departamento</td>
+                    <td th:text="${butterfly.municipio}">Municipio</td>
+                    <td th:text="${butterfly.localidad}">Localidad</td>
+                    <td>
+                        <div class="desc-scroll" th:text="${butterfly.descripcion}">Descripción</div>
+                    </td>
+                    <!-- <td><img th:src="@{${buttlerfly.imagenUrl}}" alt="Imagen de la mariposa" width="100"></td> -->
+        
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </body>
 </html>
