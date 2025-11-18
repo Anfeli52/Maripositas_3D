@@ -36,26 +36,6 @@ public class ViewController {
         return "User/userMainPage";
     }
 
-    @GetMapping("/observacion/nueva/{especieId}")
-    @PreAuthorize("hasRole('USER')")
-    public String showObservationForm(@PathVariable String especieId,
-                                      @RequestParam(name = "nombre", required = false) String nombre,
-                                      Model model) {
-        model.addAttribute("especieId", especieId);
-        model.addAttribute("especieNombre", nombre);
-        return "User/nuevaObservacion";
-    }
-
-    @PostMapping("/observacion/nueva")
-    @PreAuthorize("hasRole('USER')")
-    public String handleObservation(@RequestParam("especieId") String especieId,
-                                    @RequestParam("comentario") String comentario,
-                                    @AuthenticationPrincipal Usuario usuario) {
-        Observacion observacion = new Observacion(especieId, usuario.getId(), comentario, null);
-        observacionService.save(observacion);
-        return "redirect:/main?observacion=creada";
-    }
-
     @GetMapping("/admin/main")
     @PreAuthorize("hasRole('ADMIN')")
     public String adminMain(Model model){

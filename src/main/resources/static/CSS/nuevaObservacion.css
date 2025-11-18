@@ -1,0 +1,163 @@
+:root{
+    --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
+    --radius-md: .45rem;
+    --radius-sm: .35rem;
+    --shadow-nav: 0 5px 10px rgba(0,0,0,0.1);
+    --card-bg: #fff;
+    --accent-grad: linear-gradient(135deg,#667eea 0%, #764ba2 100%);
+    --muted-bg: #f9fafb;
+}
+
+/* Layout */
+.container{
+    margin-top: var(--navbar-offset);
+    padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container h1{
+    margin: 0 0 18px;
+    font-size: 1.4rem;
+    color: #333;
+    font-weight: 600;
+    letter-spacing: .4px;
+}
+
+/* Card / Form */
+.main-form{
+    background: var(--card-bg);
+    padding: 24px 28px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-nav);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+fieldset{
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin: 0;
+    background: var(--muted-bg);
+}
+
+legend{
+    font-weight: 600;
+    color: #333;
+    padding: 0 8px;
+}
+
+label{
+    display:block;
+    margin: 10px 0 6px;
+    color:#333;
+    font-weight:600;
+    font-size:.9rem;
+    letter-spacing:.4px;
+}
+
+input[type="text"],
+input[type="hidden"],
+input[type="url"],
+textarea{
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--radius-sm);
+    font-size: .95rem;
+    font-family: inherit;
+    transition: border-color .18s, box-shadow .18s, background-color .18s;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus{
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.10);
+    background: #f8f9ff;
+}
+
+textarea{
+    resize: vertical;
+    min-height: 120px;
+    line-height: 1.4;
+}
+
+/* Actions */
+.form-actions{
+    margin-top: 8px;
+    display:flex;
+    gap: 12px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.action-btn{
+    display:inline-block;
+    padding: .6rem .9rem;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .9rem;
+    border-radius: .4rem;
+    border: none;
+    cursor: pointer;
+    transition: transform .12s, box-shadow .18s;
+    box-shadow: 0 4px 12px rgba(16,185,129,0.18);
+}
+
+.action-btn.secondary{
+    background: #e5e7eb;
+    color: #111;
+    box-shadow: none;
+}
+
+.action-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(16,185,129,0.22);
+}
+
+.action-btn:active{
+    transform: translateY(0);
+}
+
+/* Small helper for species name display */
+.field-species p{
+    margin: 4px 0 0;
+    font-size: .95rem;
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Accessibility & Responsive */
+@media (max-width: 780px){
+    .container{
+        padding: var(--nav-padding-y, 20px) 18px;
+    }
+    .main-form{
+        padding: 18px;
+    }
+    .form-actions{
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+    .action-btn{
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .action-btn,
+    .main-form,
+    input, textarea{
+        transition: none !important;
+    }
+}
