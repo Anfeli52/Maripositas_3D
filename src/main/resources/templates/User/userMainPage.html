@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
-    <link rel="stylesheet" th:href="@{/CSS/adminMainPage.css}">
+    <link rel="stylesheet" th:href="@{/CSS/userMainPage.css}">
     <title>Title</title>
 </head>
 <body>
@@ -37,7 +37,11 @@
                     <td>
                         <div class="desc-scroll" th:text="${butterfly.descripcion}">Descripción</div>
                     </td>
-                    <!-- <td><img th:src="@{${buttlerfly.imagenUrl}}" alt="Imagen de la mariposa" width="100"></td> -->
+                    <!-- Botón para agregar observación -->
+                    <td>
+                        <a th:href="@{/observacion/nueva/{id}(id=${butterfly.id}, nombre=${butterfly.nombreComun})}"
+                           class="action-btn">Agregar Observación</a>
+                    </td>
         
                 </tr>
             </tbody>

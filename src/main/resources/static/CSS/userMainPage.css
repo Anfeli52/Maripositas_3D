@@ -1,0 +1,143 @@
+:root{
+    --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
+    --radius-md: .45rem;
+    --shadow-nav: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.buttlerflys-section{
+    margin-top: var(--navbar-offset);
+    padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
+}
+
+.buttlerflys-section h1{
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+    color: #333;
+    letter-spacing: .5px;
+    font-weight: 600;
+}
+
+.buttlerflys-table{
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-nav);
+    overflow: hidden;
+}
+
+.buttlerflys-table th,
+.buttlerflys-table td{
+    padding: .75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.buttlerflys-table thead th{
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    letter-spacing: .5px;
+}
+
+.buttlerflys-table tbody tr + tr td{
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
+
+.buttlerflys-table tbody tr:hover{
+    background: #f9fafb;
+    transition: background .15s ease;
+}
+
+.buttlerflys-table td:last-child{
+    width: 140px;
+    vertical-align: middle;
+    display: flex;
+    gap: .5rem;
+}
+
+.action-btn,
+.edit-btn,
+.delete-btn{
+    flex: 1 1 auto;
+    padding: .45rem .6rem;
+    font-size: .70rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    border: none;
+    border-radius: .35rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background .15s, transform .15s;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    background: #10b981;
+}
+
+.action-btn:hover{
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.edit-btn{
+    background: #3b82f6;
+}
+
+.desc-scroll{
+    max-width: 220px;
+    max-height: 70px;
+    overflow-y: auto;
+    padding: 4px 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: .35rem;
+    font-size: .75rem;
+    line-height: 1.2;
+    background: #f9fafb;
+    scrollbar-width: thin;
+}
+
+.desc-scroll::-webkit-scrollbar{
+    width: 6px;
+}
+
+.desc-scroll::-webkit-scrollbar-track{
+    background: transparent;
+}
+
+.desc-scroll::-webkit-scrollbar-thumb{
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.desc-scroll::-webkit-scrollbar-thumb:hover{
+    background: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 780px){
+    .buttlerflys-section{
+        padding: var(--nav-padding-y, 20px) 16px;
+    }
+    .buttlerflys-table{
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .buttlerflys-table td:last-child{
+        min-width: 160px;
+    }
+}
+
+/* Accesibilidad: reduced motion */
+@media (prefers-reduced-motion: reduce){
+    .action-btn,
+    .buttlerflys-table tbody tr{
+        transition: none !important;
+    }
+    .action-btn:hover{
+        transform: none;
+    }
+}
