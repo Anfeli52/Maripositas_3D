@@ -27,7 +27,6 @@ public class EspecieMariposaService {
 
         UnwindOperation unwind = Aggregation.unwind("detallesUbicacion");
         ProjectionOperation projection = new ProjectionOperation()
-                .andExclude("_id")
                 .and("id").as("id")
                 .and("nombreCientifico").as("nombreCientifico")
                 .and("nombreComun").as("nombreComun")
