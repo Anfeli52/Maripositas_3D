@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
+    <link rel="stylesheet" th:href="@{/CSS/adminMainPage.css}">
+    <title>Nueva Observación</title>
+</head>
+<body>
+    <nav th:replace="~{User/fragment_user :: userNavbar}"></nav>
+    <section class="container" style="max-width:700px; margin-top:calc((var(--nav-padding-y,20px) * 2) + 40px);">
+        <h1>Agregar Observación</h1>
+
+        <form th:action="@{/observacion/nueva}" method="post" class="main-form">
+            <input type="hidden" name="especieId" th:value="${especieId}">
+
+            <fieldset>
+                <legend>Mariposa</legend>
+                <p th:text="${especieNombre != null ? especieNombre : 'Especie'}">Especie</p>
+            </fieldset>
+
+            <fieldset>
+                <label for="comentario">Comentario</label>
+                <textarea id="comentario" name="comentario" rows="4" required></textarea>
+            </fieldset>
+
+            <div class="form-actions">
+                <button type="submit">Guardar Observación</button>
+                <a th:href="@{/main}" class="action-btn" style="background:#ccc;color:#111;text-decoration:none;padding:.6rem .9rem;border-radius:.35rem;">Cancelar</a>
+            </div>
+        </form>
+    </section>
+</body>
+</html>
