@@ -43,13 +43,54 @@
                     </td>
                     <!-- <td><img th:src="@{${buttlerfly.imagenUrl}}" alt="Imagen de la mariposa" width="100"></td> -->
                     <td>
-                        <button class="edit-btn">Editar</button>
+                        <button class="edit-btn" onclick="fetchAndOpenModal(this.getAttribute('data-id'))" th:data-id="${butterfly.id}">Editar</button>
                         <button class="delete-btn">Eliminar</button>
                     </td>
-
                 </tr>
             </tbody>
         </table>
     </section>
+
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditModal()">&times;</span>
+            <h2>Editar Especie: <span id="edit-nombre-cientifico-display"></span></h2>
+
+            <form id="editForm">
+                <input type="hidden" id="edit-id" name="id">
+                <input type="hidden" id="edit-ubicacion-id" name="ubicacionRecoleccionId">
+
+                <fieldset>
+                    <legend>Datos de Especie</legend>
+                    <label for="edit-nombre-cientifico">Nombre Científico:</label>
+                    <input type="text" id="edit-nombre-cientifico" name="nombreCientifico" required>
+
+                    <label for="edit-familia">Familia:</label>
+                    <input type="text" id="edit-familia" name="familia">
+
+                    <label for="edit-descripcion">Descripción:</label>
+                    <textarea id="edit-descripcion" name="descripcion" rows="3"></textarea>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Datos de Ubicación</legend>
+                    <label for="edit-departamento">Departamento:</label>
+                    <input type="text" id="edit-departamento" name="departamento">
+
+                    <label for="edit-municipio">Municipio:</label>
+                    <input type="text" id="edit-municipio" name="municipio">
+
+                    <label for="edit-localidad">Localidad:</label>
+                    <input type="text" id="edit-localidad" name="localidad">
+                </fieldset>
+
+                <div id="edit-error-message" style="color: red; margin-bottom: 10px;"></div>
+                <button type="submit" class="save-btn">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/JS/script.js}"></script>
 </body>
 </html>
