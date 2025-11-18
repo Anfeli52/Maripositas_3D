@@ -28,15 +28,7 @@ public class RegisterController {
                                  @RequestParam("contrasena") String contrasena,
                                  Model model) {
         try {
-            // Usuario constructor order: id, nombre, correo, rol, contrasena, fechaRegistro
-            Usuario nuevo = new Usuario(
-                    null,
-                    nombre,
-                    correo,
-                    "USER",
-                    contrasena,
-                    new Date()
-            );
+            Usuario nuevo = new Usuario(null, nombre, correo, "USER", contrasena, new Date());
             usuarioService.save(nuevo);
             return "redirect:/login?registered";
         } catch (Exception e) {

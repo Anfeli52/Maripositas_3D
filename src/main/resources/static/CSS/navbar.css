@@ -16,6 +16,7 @@ html{ box-sizing: border-box; }
 body{
     min-height: 100vh;
     font-family: 'Poppins',sans-serif;
+    margin: 0; /* evita scroll por margen por defecto */
 }
 
 .navbar{

@@ -4,8 +4,22 @@
     --shadow-nav: 0 5px 10px rgba(0,0,0,0.1);
 }
 
+html, body{
+    height: 100%;
+}
+
+body{
+    min-height: calc(100vh - var(--navbar-offset));
+    padding-top: var(--navbar-offset);
+    overflow-y: auto;
+}
+
+body.modal-open{
+    overflow: hidden;
+}
+
 .buttlerflys-section{
-    margin-top: var(--navbar-offset);
+    margin-top: 0;
     padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
 }
 
@@ -43,11 +57,9 @@
 }
 
 .buttlerflys-table td:last-child{
+    /* Consolidar la columna de acciones (evita declaraciones duplicadas) */
     width: 140px;
     vertical-align: middle;
-}
-
-.buttlerflys-table td:last-child{
     display: flex;
     gap: .5rem;
 }
@@ -175,4 +187,73 @@
 
 .register-buttlerfly-btn a:active{
     transform: translateY(0);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+    width: min(90%, 650px);
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    background-color: #fefefe;
+    padding: 25px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,.2), 0 6px 20px rgba(0,0,0,.19);
+}
+
+/* Scrollbar del contenido (opcional) */
+.modal-content::-webkit-scrollbar{ width: 8px; }
+.modal-content::-webkit-scrollbar-thumb{ background: #c7c7c7; border-radius: 4px; }
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content fieldset {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.modal-content legend {
+    font-weight: bold;
+    color: #007bff;
+    padding: 0 10px;
+}
+/* Asegúrate de añadir estilos para inputs y textarea para que se vean bien */
+.modal-content input[type="text"],
+.modal-content textarea {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin: 5px 0 10px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
