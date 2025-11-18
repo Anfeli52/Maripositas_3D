@@ -2,9 +2,30 @@
     --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
 }
 
+
+html, body{
+    height: 100%;
+}
+
+
+body{
+    min-height: calc(100vh - var(--navbar-offset));
+    padding-top: var(--navbar-offset);
+    overflow-y: auto; 
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
 .users-section{
-    margin-top: var(--navbar-offset);
+    margin-top: 0;
     padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
+}
+
+.users-section h1{
+    margin: 0 0 16px;
+    font-size: 1.6rem;
+    color: #333;
+    letter-spacing: .5px;
 }
 
 .users-table{
@@ -18,41 +39,65 @@
 
 .users-table th,
 .users-table td{
-    padding: .75rem 1rem;
+    padding: .85rem 1rem;
     text-align: left;
     vertical-align: middle;
+}
+
+.users-table thead th{
+    font-weight: 600;
+    color: #333;
+    background: #f9fafb;
 }
 
 .users-table tbody tr + tr td{
     border-top: 1px solid rgba(0,0,0,0.06);
 }
 
-.edit-btn, .delete-btn{
-    padding: .4rem .8rem;
-    border: none;
-    border-radius: var(--radius-md, .45rem);
-    color: #fff;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: var(--shadow-btn, 0 2px 6px -1px #00000050);
-    transition: background .2s, box-shadow .2s;
+.users-table td:last-child{
+    width: 160px;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
 }
+
+.edit-btn,
+.delete-btn{
+    flex: 1 1 auto;
+    padding: .5rem .7rem;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    border: none;
+    border-radius: .35rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: background .15s, transform .15s;
+    color: #fff;
+}
+
 .edit-btn{
     background: #3b82f6;
-    margin-right: .5rem;
 }
 .edit-btn:hover{
     background: #2563eb;
-    box-shadow: 0 4px 12px -2px #00000050;
+    transform: translateY(-2px);
 }
+
 .delete-btn{
     background: #ef4444;
 }
 .delete-btn:hover{
-    background: #b91c1c;
-    box-shadow: 0 4px 12px -2px #00000050;
+    background: #dc2626;
+    transform: translateY(-2px);
 }
 
+.edit-btn:active,
+.delete-btn:active{
+    transform: translateY(0);
+}
+
+/* Responsive */
 @media (max-width: 780px){
     .users-section{
         padding: var(--nav-padding-y, 20px) 16px;
@@ -61,5 +106,17 @@
         display: block;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+    }
+    .users-table td:last-child{
+        min-width: 160px;
+    }
+}
+
+/* Accesibilidad: reduce motion */
+@media (prefers-reduced-motion: reduce){
+    .edit-btn,
+    .delete-btn{
+        transition: none !important;
+        transform: none !important;
     }
 }
