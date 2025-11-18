@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.bson.types.ObjectId;
 
 @Document("observaciones")
 public class Observacion {
@@ -13,10 +14,10 @@ public class Observacion {
     private String id;
 
     @Field("especie_id")
-    private String especieId;
+    private ObjectId especieId;
 
     @Field("usuario_id")
-    private String usuarioId;
+    private ObjectId usuarioId;
 
     @Field("comentario")
     private String comentario;
@@ -26,7 +27,7 @@ public class Observacion {
 
     public Observacion() {}
 
-    public Observacion(String especieId, String usuarioId, String comentario, Date fecha) {
+    public Observacion(ObjectId especieId, ObjectId usuarioId, String comentario, Date fecha) {
         this.especieId = especieId;
         this.usuarioId = usuarioId;
         this.comentario = comentario;
@@ -41,19 +42,19 @@ public class Observacion {
         this.id = id;
     }
 
-    public String getEspecieId() {
+    public ObjectId getEspecieId() {
         return especieId;
     }
 
-    public void setEspecieId(String especieId) {
+    public void setEspecieId(ObjectId especieId) {
         this.especieId = especieId;
     }
 
-    public String getUsuarioId() {
+    public ObjectId getUsuarioId() {
         return usuarioId;
     }
 
-    public void setUsuarioId(String usuarioId) {
+    public void setUsuarioId(ObjectId usuarioId) {
         this.usuarioId = usuarioId;
     }
 

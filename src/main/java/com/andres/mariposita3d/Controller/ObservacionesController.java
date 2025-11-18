@@ -13,6 +13,9 @@ import com.andres.mariposita3d.Collection.Observacion;
 import com.andres.mariposita3d.Collection.Usuario;
 import com.andres.mariposita3d.Service.ObservacionService;
 
+// Nuevo import
+import org.bson.types.ObjectId;
+
 @Controller
 public class ObservacionesController {
 
@@ -22,7 +25,7 @@ public class ObservacionesController {
         this.ObservacionService = ObservacionService;
     }
 
-@GetMapping("/observacion/nueva/{especieId}")
+    @GetMapping("/observacion/nueva/{especieId}")
     @PreAuthorize("hasRole('USER')")
     public String showObservationForm(@PathVariable String especieId,
                                       @RequestParam(name = "nombre", required = false) String nombre,
@@ -34,11 +37,14 @@ public class ObservacionesController {
 
     @PostMapping("/observacion/nueva")
     @PreAuthorize("hasRole('USER')")
-    public String handleObservation(@RequestParam("especieId") String especieId,
+    public String handleObservation(@RequestParam("especieId") ObjectId especieId,
                                     @RequestParam("comentario") String comentario,
                                     @AuthenticationPrincipal Usuario usuario) {
-        Observacion observacion = new Observacion(especieId, usuario.getId(), comentario, null);
+        // Convertir el id del usuario a ObjectId antes de crear la observación
+        ObjectId usuarioObjectId = new ObjectId(usuario.getId());
+        Observacion observacion = new Observacion(especieId, usuarioObjectId, comentario, null);
         ObservacionService.save(observacion);
-        return "redirect:/main?observacion=creada";}
+        return "redirect:/main?observacion=creada";
+    }
 
 }
