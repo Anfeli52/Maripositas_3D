@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.andres.mariposita3d.Collection.Ubicacion;
-import com.andres.mariposita3d.Repository.IUbicacionRepository;
+import com.andres.mariposita3d.Repository.UbicacionRepository;
 import com.andres.mariposita3d.IService.IUbicacionService;
 
 @Service
 public class UbicacionService implements IUbicacionService {
 
     @Autowired
-    private IUbicacionRepository repository;
+    private UbicacionRepository repository;
 
     @Override
     public List<Ubicacion> all() {

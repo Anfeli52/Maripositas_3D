@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import com.andres.mariposita3d.Collection.Observacion;
 
-public interface IObservacionRepository extends MongoRepository<Observacion, String> {
+public interface ObservacionRepository extends MongoRepository<Observacion, String> {
     List<Observacion> findByUsuarioId(String usuarioId);
     List<Observacion> findByEspecieId(String especieId);
 }

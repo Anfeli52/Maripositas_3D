@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
     <link rel="stylesheet" th:href="@{/CSS/adminMainPage.css}">
-    <title>Title</title>
+    <title>Gestión de Mariposas</title>
 </head>
+
 <body>
     <nav th:replace="~{Admin/fragment_admin :: adminNavbar}"></nav>
     <section class="buttlerflys-section">
@@ -43,7 +45,9 @@
                     </td>
                     <!-- <td><img th:src="@{${buttlerfly.imagenUrl}}" alt="Imagen de la mariposa" width="100"></td> -->
                     <td>
-                        <button class="edit-btn" onclick="fetchAndOpenModal(this.getAttribute('data-id'))" th:data-id="${butterfly.id}">Editar</button>
+                        <!-- Llama a la función JS y pasa el ID de la mariposa -->
+                        <button class="edit-btn" onclick="openModalUpdateButterfly(this.getAttribute('data-id'))"
+                            th:data-id="${butterfly.id}">Editar</button>
                         <button class="delete-btn">Eliminar</button>
                     </td>
                 </tr>
@@ -54,35 +58,36 @@
 
     <div id="editModal" class="modal">
         <div class="modal-content">
-            <span class="close-button" onclick="closeEditModal()">&times;</span>
+            <!-- Usa closeModal() con el ID de la modal actual -->
+            <span class="close-button" onclick="closeModal('editModal')">&times;</span>
             <h2>Editar Especie: <span id="edit-nombre-cientifico-display"></span></h2>
 
             <form id="editForm">
-                <input type="hidden" id="edit-id" name="id">
-                <input type="hidden" id="edit-ubicacion-id" name="ubicacionRecoleccionId">
+                <input type="hidden" id="edit-id" name="edit-id">
+                <input type="hidden" id="edit-ubicacion-id" name="edit-ubicacion-id">
 
                 <fieldset>
                     <legend>Datos de Especie</legend>
                     <label for="edit-nombre-cientifico">Nombre Científico:</label>
-                    <input type="text" id="edit-nombre-cientifico" name="nombreCientifico" required>
+                    <input type="text" id="edit-nombre-cientifico" name="edit-nombre-cientifico" required>
 
                     <label for="edit-familia">Familia:</label>
-                    <input type="text" id="edit-familia" name="familia">
+                    <input type="text" id="edit-familia" name="edit-familia">
 
                     <label for="edit-descripcion">Descripción:</label>
-                    <textarea id="edit-descripcion" name="descripcion" rows="3"></textarea>
+                    <textarea id="edit-descripcion" name="edit-descripcion" rows="3"></textarea>
                 </fieldset>
 
                 <fieldset>
                     <legend>Datos de Ubicación</legend>
                     <label for="edit-departamento">Departamento:</label>
-                    <input type="text" id="edit-departamento" name="departamento">
+                    <input type="text" id="edit-departamento" name="edit-departamento">
 
                     <label for="edit-municipio">Municipio:</label>
-                    <input type="text" id="edit-municipio" name="municipio">
+                    <input type="text" id="edit-municipio" name="edit-municipio">
 
                     <label for="edit-localidad">Localidad:</label>
-                    <input type="text" id="edit-localidad" name="localidad">
+                    <input type="text" id="edit-localidad" name="edit-localidad">
                 </fieldset>
 
                 <div id="edit-error-message" style="color: red; margin-bottom: 10px;"></div>
@@ -91,6 +96,8 @@
         </div>
     </div>
 
+    <!-- Carga el script modular al final -->
     <script th:src="@{/JS/script.js}"></script>
 </body>
+
 </html>

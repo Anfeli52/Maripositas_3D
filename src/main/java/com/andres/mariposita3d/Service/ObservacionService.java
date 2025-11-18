@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.andres.mariposita3d.Collection.Observacion;
-import com.andres.mariposita3d.Repository.IObservacionRepository;
+import com.andres.mariposita3d.Repository.ObservacionRepository;
 import com.andres.mariposita3d.IService.IObservacionService;
 
 @Service
 public class ObservacionService implements IObservacionService {
 
     @Autowired
-    private IObservacionRepository repository;
+    private ObservacionRepository repository;
 
     @Override
     public List<Observacion> all() {

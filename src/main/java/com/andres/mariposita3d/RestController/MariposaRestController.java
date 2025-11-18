@@ -1,4 +1,4 @@
-package com.andres.mariposita3d.Controller;
+package com.andres.mariposita3d.RestController;
 
 import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
 import com.andres.mariposita3d.Service.EspecieMariposaService;
@@ -45,5 +45,9 @@ public class MariposaRestController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno del servidor al actualizar.");
         }
     }
+
+
+
+
 
 }

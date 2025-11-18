@@ -4,8 +4,7 @@ import com.andres.mariposita3d.Collection.EspecieMariposa;
 import com.andres.mariposita3d.Collection.Ubicacion;
 import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
 import com.andres.mariposita3d.Repository.EspecieMariposaRepository;
-import com.andres.mariposita3d.Repository.IUbicacionRepository;
-import com.mongodb.client.MongoClient;
+import com.andres.mariposita3d.Repository.UbicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 public class EspecieMariposaService {
@@ -25,11 +23,11 @@ public class EspecieMariposaService {
     private EspecieMariposaRepository especieMariposaRepository;
 
     @Autowired
-    private IUbicacionRepository iUbicacionRepository;
+    private UbicacionRepository ubicacionRepository;
 
-    public EspecieMariposaService(MongoTemplate mongoTemplate, IUbicacionRepository iUbicacionRepository, EspecieMariposaRepository especieMariposaRepository) {
+    public EspecieMariposaService(MongoTemplate mongoTemplate, UbicacionRepository ubicacionRepository, EspecieMariposaRepository especieMariposaRepository) {
         this.mongoTemplate = mongoTemplate;
-        this.iUbicacionRepository = iUbicacionRepository;
+        this.ubicacionRepository = ubicacionRepository;
         this.especieMariposaRepository = especieMariposaRepository;
     }
 
@@ -120,7 +118,7 @@ public class EspecieMariposaService {
     }
 
     private void updateUbicacionData(MariposaDetalleDTO data) {
-        Ubicacion ubicacion = iUbicacionRepository.findById(
+        Ubicacion ubicacion = ubicacionRepository.findById(
                 data.getUbicacionRecoleccionId()).orElseThrow(() -> new NoSuchElementException("Ubicación asociada no encontrada con ID: " + data.getUbicacionRecoleccionId())
         );
 
@@ -128,7 +126,7 @@ public class EspecieMariposaService {
         ubicacion.setMunicipio(data.getMunicipio());
         ubicacion.setLocalidad(data.getLocalidad());
 
-        iUbicacionRepository.save(ubicacion);
+        ubicacionRepository.save(ubicacion);
     }
 
 }

@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.andres.mariposita3d.Collection.Usuario;
-import com.andres.mariposita3d.Repository.IUsuarioRepository;
+import com.andres.mariposita3d.Repository.UsuarioRepository;
 import com.andres.mariposita3d.IService.IUsuarioService;
 
 @Service
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
-    private IUsuarioRepository repository;
+    private UsuarioRepository repository;
 
-    public UsuarioService(IUsuarioRepository repository) {this.repository = repository;}
+    public UsuarioService(UsuarioRepository repository) {this.repository = repository;}
 
     @Override
     public List<Usuario> all() {
