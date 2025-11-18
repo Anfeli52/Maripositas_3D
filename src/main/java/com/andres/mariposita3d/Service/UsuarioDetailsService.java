@@ -1,7 +1,7 @@
 package com.andres.mariposita3d.Service;
 
 import com.andres.mariposita3d.Collection.Usuario;
-import com.andres.mariposita3d.Repository.IUsuarioRepository;
+import com.andres.mariposita3d.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class UsuarioDetailsService implements UserDetailsService {
 
     @Autowired
-    private IUsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -2,7 +2,6 @@ package com.andres.mariposita3d.DTO;
 
 import lombok.Data;
 
-import java.util.List;
 
 @Data
 public class MariposaDetalleDTO {
