@@ -9,5 +9,8 @@ import com.andres.mariposita3d.Collection.Observacion;
 public interface ObservacionRepository extends MongoRepository<Observacion, String> {
     List<Observacion> findByUsuarioId(ObjectId usuarioId);
     List<Observacion> findByEspecieId(String especieId);
+
+    void deleteByEspecieId(String especieId);
+    long countByEspecieId(String especieId);
 }
 

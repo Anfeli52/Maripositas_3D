@@ -31,9 +31,8 @@
                     <td th:text="${user.rol}">Rol</td>
                     <td>
                         <!-- Llama a la función JS y pasa el ID del usuario -->
-                        <button class="edit-btn" onclick="openModalUpdateUser(this.getAttribute('data-id'))"
-                            th:data-id="${user.id}">Editar</button>
-                        <button class="delete-btn">Eliminar</button>
+                        <button class="edit-btn" onclick="openModalUpdateUser(this.getAttribute('data-id'))" th:data-id="${user.id}">Editar</button>
+                        <button class="delete-btn" onclick="deleteUser(this.getAttribute('data-id'))" th:data-id="${user.id}">Eliminar</button>
                     </td>
                 </tr>
             </tbody>
@@ -64,8 +63,10 @@
                     <input type="email" id="user-edit-correo" name="user-edit-correo" required>
 
                     <label for="user-edit-rol">Rol:</label>
-                    <input type="text" id="user-edit-rol" name="user-edit-rol">
-                    <!-- ... otros campos ... -->
+                    <select id="user-edit-rol" name="user-edit-rol">
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="USER">USER</option>
+                    </select>
 
                 </fieldset>
 
@@ -77,6 +78,7 @@
     </div>
 
     <!-- Carga el script modular al final -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/JS/script.js}"></script>
 </body>
 

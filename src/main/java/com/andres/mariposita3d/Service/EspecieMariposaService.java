@@ -3,9 +3,11 @@ package com.andres.mariposita3d.Service;
 import com.andres.mariposita3d.Collection.EspecieMariposa;
 import com.andres.mariposita3d.Collection.Ubicacion;
 import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
-import com.andres.mariposita3d.DTO.MariposaMapaDTO;
 import com.andres.mariposita3d.Repository.EspecieMariposaRepository;
+import com.andres.mariposita3d.Repository.ObservacionRepository;
 import com.andres.mariposita3d.Repository.UbicacionRepository;
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
@@ -26,10 +28,14 @@ public class EspecieMariposaService {
     @Autowired
     private UbicacionRepository ubicacionRepository;
 
-    public EspecieMariposaService(MongoTemplate mongoTemplate, UbicacionRepository ubicacionRepository, EspecieMariposaRepository especieMariposaRepository) {
+    @Autowired
+    private ObservacionRepository observacionRepository;
+
+    public EspecieMariposaService(MongoTemplate mongoTemplate, UbicacionRepository ubicacionRepository, EspecieMariposaRepository especieMariposaRepository, ObservacionRepository observacionRepository) {
         this.mongoTemplate = mongoTemplate;
         this.ubicacionRepository = ubicacionRepository;
         this.especieMariposaRepository = especieMariposaRepository;
+        this.observacionRepository = observacionRepository;
     }
 
     public List<MariposaDetalleDTO> findAllWithUbicationDetails() {
@@ -101,7 +107,10 @@ public class EspecieMariposaService {
             throw new IllegalArgumentException("IDs de Especie o Ubicación faltantes.");
         }
 
+        System.out.println("Estoy aquí con esta información: "+data.toString());
+
         updateEspecieMariposaData(data);
+        System.out.println("Pasé el primer método :D");
         updateUbicacionData(data);
     }
 
@@ -115,10 +124,22 @@ public class EspecieMariposaService {
         especie.setFamilia(data.getFamilia());
         especie.setDescripcion(data.getDescripcion());
 
-        especieMariposaRepository.save(especie);
+        System.out.println("Soy yo nuevamente, esto funciona aquí, por ahora, información: "+data.toString());
+
+        try { // <--- AÑADE ESTE TRY
+            especieMariposaRepository.save(especie);
+        } catch (Exception e) {
+            System.err.println("!!! ERROR FATAL AL GUARDAR LA ESPECIE MARIPOSA !!!");
+            e.printStackTrace(); // <--- IMPRIME EL ERROR REAL
+            throw e; // Re-lanza la excepción para que el controlador la capture
+        }
+
     }
 
     private void updateUbicacionData(MariposaDetalleDTO data) {
+
+        System.out.println("Funciono?");
+
         Ubicacion ubicacion = ubicacionRepository.findById(
                 data.getUbicacionRecoleccionId()).orElseThrow(() -> new NoSuchElementException("Ubicación asociada no encontrada con ID: " + data.getUbicacionRecoleccionId())
         );
@@ -127,37 +148,53 @@ public class EspecieMariposaService {
         ubicacion.setMunicipio(data.getMunicipio());
         ubicacion.setLocalidad(data.getLocalidad());
 
+        System.out.println("Soy yo nueva nuevamente, esto funciona otra vez hasta aquí, por ahora, creo, información: "+data.toString());
+
         ubicacionRepository.save(ubicacion);
     }
 
-    public List<MariposaMapaDTO> findAllForMap() {
+    public void deleteEspecieConObservaciones(String id) {
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("ID requerido.");
+        }
+        if (!ObjectId.isValid(id)) {
+            throw new IllegalArgumentException("ID inválido.");
+        }
+        
+        // Verifica que exista
+        especieMariposaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Especie no encontrada."));
+        
+        // Primero elimina observaciones
+        observacionRepository.deleteByEspecieId(id);
+        
+        // Luego elimina la especie
+        especieMariposaRepository.deleteById(id);
+    }
 
-        LookupOperation lookup = Aggregation.lookup(
-                "ubicaciones",
-                "ubicacionRecoleccionId",
-                "_id",
-                "detallesUbicacion"
-        );
-
-        UnwindOperation unwind = Aggregation.unwind("detallesUbicacion");
-        ProjectionOperation projection = Aggregation.project()
-                .and("nombreCientifico").as("nombreCientifico")
-                .and("nombreComun").as("nombreComun")
-                .and("familia").as("familia")
-                .and("detallesUbicacion.localidad").as("localidad")
-                .and("detallesUbicacion.municipio").as("municipio")
-                .and("detallesUbicacion.departamento").as("departamento")
-                .and("detallesUbicacion.geolocalizacion.latitud").as("lat")  // Mapea latitud a 'lat'
-                .and("detallesUbicacion.geolocalizacion.longitud").as("lon"); // Mapea longitud a 'lon'
-
-        Aggregation aggregation = Aggregation.newAggregation(lookup, unwind, projection);
-        AggregationResults<MariposaMapaDTO> results = mongoTemplate.aggregate(
-                aggregation,
-                "especieMariposa",
-                MariposaMapaDTO.class
-        );
-
-        return results.getMappedResults();
+    /**
+     * Elimina especie solo si NO tiene observaciones.
+     */
+    public void deleteEspecieById(String id) {
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("ID requerido.");
+        }
+        if (!ObjectId.isValid(id)) {
+            throw new IllegalArgumentException("ID inválido.");
+        }
+        
+        especieMariposaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Especie no encontrada."));
+        
+        // Verifica si tiene observaciones
+        long count = observacionRepository.countByEspecieId(id);
+        if (count > 0) {
+            throw new IllegalStateException(
+                "No se puede eliminar: existen " + count + " observaciones asociadas."
+            );
+        }
+        
+        especieMariposaRepository.deleteById(id);
     }
 
 }
