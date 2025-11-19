@@ -87,13 +87,13 @@ function openModalUpdateButterfly(butterflyId) {
 
 const USER_MODAL_ID = 'editUserModal'; // Debes crear un nuevo ID para esta modal
 const USER_FORM_ID = 'editUserForm';   // Debes crear un nuevo ID para este formulario
-const USER_API_URL = '/api/usuarios';  // Asume esta ruta para tu API de Usuario
+const USER_API_URL = '/api/usuario';  // Corregido a singular
 
 function loadUserDataToForm(data) {
     document.getElementById("user-edit-id").value = data.id;
     document.getElementById("user-edit-nombre").value = data.nombre;
     document.getElementById("user-edit-correo").value = data.correo;
-
+    document.getElementById("user-edit-rol").value = data.rol;
 }
 
 function mapUserFormToDTO(formData) {
@@ -101,6 +101,7 @@ function mapUserFormToDTO(formData) {
         id: formData.get('user-edit-id'),
         nombre: formData.get('user-edit-nombre'),
         correo: formData.get('user-edit-correo'),
+        rol: formData.get('user-edit-rol'),
     };
 }
 
@@ -140,7 +141,8 @@ function handleFormSubmit(event, apiUrl, modalId, dtoMapperFunction) {
     const formData = new FormData(event.target);
     const data = dtoMapperFunction(formData);
 
-    fetch(apiUrl, {
+    // Enviar PUT a /api/usuario/{id}
+    fetch(`${apiUrl}/${data.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -163,6 +165,28 @@ function handleFormSubmit(event, apiUrl, modalId, dtoMapperFunction) {
     });
 }
 
+function deleteUser(userId) {
+    if (!userId) return;
+    if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
+    fetch(`${USER_API_URL}/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Usuario eliminado correctamente.');
+            window.location.reload();
+        } else {
+            alert('Error al eliminar el usuario.');
+        }
+    })
+    .catch(error => {
+        alert('Error de conexión con el servidor.');
+        console.error(error);
+    });
+}
 
 // =======================================================
 // E. INICIALIZACIÓN
