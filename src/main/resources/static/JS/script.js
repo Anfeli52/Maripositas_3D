@@ -355,3 +355,151 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// ==============================
+// Buscador universal (admin + user) - corregido y listo para pegar
+// ==============================
+(function () {
+  'use strict';
+
+  const COL = { NOMBRE_CIENTIFICO: 0, NOMBRE_COMUN: 1, FAMILIA: 2, DEPARTAMENTO: 3, MUNICIPIO: 4, LOCALIDAD: 5 };
+
+  function q(sel, root = document) { return root.querySelector(sel); }
+  function qa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }
+  function textCell(row, idx) { const c = row.querySelectorAll('td')[idx]; return c ? c.textContent.trim() : ''; }
+  function normalize(s) { return (s || '').toString().trim().toLowerCase(); }
+
+  function collectValues(rows) {
+    const species = new Set(), deps = new Set(), muns = new Set();
+    rows.forEach(r => {
+      const nc = textCell(r, COL.NOMBRE_CIENTIFICO);
+      const ncom = textCell(r, COL.NOMBRE_COMUN);
+      const dep = textCell(r, COL.DEPARTAMENTO);
+      const mun = textCell(r, COL.MUNICIPIO);
+      if (nc) species.add(nc);
+      if (ncom) species.add(ncom);
+      if (dep) deps.add(dep);
+      if (mun) muns.add(mun);
+    });
+    return { species: Array.from(species).sort(), deps: Array.from(deps).sort(), muns: Array.from(muns).sort() };
+  }
+
+  function fillSelect(selectEl, values) {
+    if (!selectEl) return;
+    const placeholder = selectEl.querySelector('option');
+    const placeholderText = placeholder ? placeholder.textContent : '';
+    selectEl.innerHTML = '';
+    if (placeholder) {
+      const ph = document.createElement('option');
+      ph.value = '';
+      ph.textContent = placeholderText;
+      selectEl.appendChild(ph);
+    }
+    values.forEach(v => {
+      const opt = document.createElement('option');
+      // guardamos value normalizado (minúsculas) para comparaciones fiables
+      opt.value = (v || '').toString().trim().toLowerCase();
+      opt.textContent = v;
+      selectEl.appendChild(opt);
+    });
+  }
+
+  function applyFilters(state) {
+    const qText = normalize(state.searchInput.value);
+    const speciesVal = state.selSpecies ? (state.selSpecies.value || '').toString().trim().toLowerCase() : '';
+    const deptVal = state.selDept ? (state.selDept.value || '').toString().trim().toLowerCase() : '';
+    const munVal = state.selMun ? (state.selMun.value || '').toString().trim().toLowerCase() : '';
+
+    state.tableRows.forEach(row => {
+      const nombreC = normalize(textCell(row, COL.NOMBRE_CIENTIFICO));
+      const nombreCom = normalize(textCell(row, COL.NOMBRE_COMUN));
+      const familia = normalize(textCell(row, COL.FAMILIA));
+      const departamento = normalize(textCell(row, COL.DEPARTAMENTO));
+      const municipio = normalize(textCell(row, COL.MUNICIPIO));
+      const localidad = normalize(textCell(row, COL.LOCALIDAD));
+
+      const matchesText = !qText || nombreC.includes(qText) || nombreCom.includes(qText) || familia.includes(qText) || localidad.includes(qText);
+
+      // comparar con valores normalizados (option.value ya está en minúsculas)
+      const matchesSpecies = !speciesVal || nombreC === speciesVal || nombreCom === speciesVal;
+      const matchesDept = !deptVal || departamento === deptVal;
+      const matchesMun = !munVal || municipio === munVal;
+
+      row.style.display = (matchesText && matchesSpecies && matchesDept && matchesMun) ? '' : 'none';
+    });
+  }
+
+  function debounce(fn, wait = 160) { let t; return function () { clearTimeout(t); t = setTimeout(fn, wait); }; }
+
+  function initOnce() {
+    const searchInput = q('#searchName');
+    const selSpecies = q('#filterSpecies');
+    const selDept = q('#filterDepartamento');
+    const selMun = q('#filterMunicipio');
+    const clearBtn = q('#clearFilters');
+    const tableEl = q('.buttlerflys-table');
+
+    if (!tableEl || !searchInput || !selSpecies || !selDept || !selMun || !clearBtn) {
+      return null;
+    }
+
+    const tableRows = qa('tbody tr', tableEl);
+    const vals = collectValues(tableRows);
+    fillSelect(selSpecies, vals.species);
+    fillSelect(selDept, vals.deps);
+    fillSelect(selMun, vals.muns);
+
+    const state = { searchInput, selSpecies, selDept, selMun, clearBtn, tableEl, tableRows };
+
+    searchInput.addEventListener('input', debounce(() => applyFilters(state)));
+    selSpecies.addEventListener('change', () => applyFilters(state));
+    selDept.addEventListener('change', () => {
+      const selected = selDept.value;
+      const rows = qa('tbody tr', tableEl);
+      const munSet = new Set();
+      rows.forEach(r => {
+        const d = textCell(r, COL.DEPARTAMENTO);
+        const m = textCell(r, COL.MUNICIPIO);
+        if (!selected || d.toString().trim().toLowerCase() === selected) munSet.add(m);
+      });
+      // llenar municipios con valores originales pero option.value será normalizado en fillSelect
+      fillSelect(selMun, Array.from(munSet).sort());
+      applyFilters(state);
+    });
+    selMun.addEventListener('change', () => applyFilters(state));
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      selSpecies.selectedIndex = 0;
+      selDept.selectedIndex = 0;
+      selMun.selectedIndex = 0;
+      const vals2 = collectValues(tableRows);
+      fillSelect(selMun, vals2.muns);
+      applyFilters(state);
+    });
+
+    // initial filter
+    applyFilters(state);
+    console.info('Buscador inicializado.');
+    return state;
+  }
+
+  function startInit(retries = 8, interval = 350) {
+    let attempts = 0;
+    const tryInit = () => {
+      const s = initOnce();
+      if (s) return;
+      attempts++;
+      if (attempts < retries) setTimeout(tryInit, interval);
+      else console.warn('Buscador: no se pudo inicializar. Verifica IDs y estructura de la tabla en esta vista.');
+    };
+    tryInit();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => startInit());
+  } else {
+    startInit();
+  }
+
+})();
