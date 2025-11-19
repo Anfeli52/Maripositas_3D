@@ -2,19 +2,25 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Mariposas - Usuario</title>
+
     <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
     <link rel="stylesheet" th:href="@{/CSS/mapa.css}">
-    <title>Mapa de Mariposas (Admin)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
-    <div th:replace="~{User/fragment_user :: userNavbar}"></div>
-    <main>
-        <h1>Mapa de Mariposas</h1>
-        <div class="mapa-container">
-            <!-- Aquí irá el mapa en el futuro -->
-            <p>Próximamente podrás ver el mapa con las ubicaciones de las mariposas.</p>
-        </div>
+    <nav th:replace="~{User/fragment_user :: userNavbar}"></nav>
+
+    <main style="padding:20px; max-width:1200px; margin:0 auto;">
+        <section>
+            <h1>Mapa de Mariposas Registradas</h1>
+            <div id="map"></div>
+            <div id="map-debug" style="display:none; margin-top:12px;"></div>
+        </section>
     </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script th:src="@{/js/mapa.js}"></script>
 </body>
 </html>
