@@ -14,6 +14,32 @@
     <section class="buttlerflys-section">
         <h1>Tabla de Mariposas Registradas</h1>
 
+        <div class="search-bar">
+            <div class="search-input-wrap">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" stroke="currentColor"
+                        stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
+                <input id="searchName" class="search-input" type="search"
+                    placeholder="Buscar por nombre científico o común..." />
+            </div>
+
+            <select id="filterSpecies" aria-label="Filtrar por especie">
+                <option value="">Todas las especies</option>
+            </select>
+
+            <select id="filterDepartamento" aria-label="Filtrar por departamento">
+                <option value="">Todos los departamentos</option>
+            </select>
+
+            <select id="filterMunicipio" aria-label="Filtrar por municipio">
+                <option value="">Todos los municipios</option>
+            </select>
+
+            <button id="clearFilters" class="btn-clear" type="button">Limpiar</button>
+        </div>
+
+
         <div style="display: flex; gap: 12px; margin-bottom: 20px;">
             <button class="register-buttlerfly-btn">
                 <a th:href="@{/admin/registroMariposa}">Registrar Nueva Mariposa</a>
