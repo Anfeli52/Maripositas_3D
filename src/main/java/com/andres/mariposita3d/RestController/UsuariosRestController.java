@@ -25,18 +25,35 @@ public class UsuariosRestController {
         return userService.findById(id);
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> update(@RequestBody Usuario editedUser) {
+    public ResponseEntity<Void> update(@PathVariable String id, @RequestBody Usuario editedUser) {
         try {
-            System.out.println("Pasé por aquí con esta información: "+editedUser.toString());
-            userService.save(editedUser);
+            Optional<Usuario> existingUserOp = userService.findById(id);
+            if (existingUserOp.isEmpty()) {
+                throw new NoSuchElementException("Usuario no encontrado con ID: " + id);
+            }
+
+            Usuario existingUser = existingUserOp.get();
+
+            if (editedUser.getNombre() != null) {
+                existingUser.setNombre(editedUser.getNombre());
+            }
+            if (editedUser.getCorreo() != null) {
+                existingUser.setCorreo(editedUser.getCorreo());
+            }
+            if (editedUser.getRol() != null) {
+                existingUser.setRol(editedUser.getRol());
+            }
+            userService.save(existingUser);
+
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
+            System.err.println("Error en la actualización de usuario: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error interno del servidor al actualizar.");
         }
     }
