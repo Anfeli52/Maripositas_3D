@@ -45,7 +45,7 @@ public class ObservacionService implements IObservacionService {
 
     @Override
     public List<Observacion> findByUsuarioId(String usuarioId) {
-        return repository.findByUsuarioId(new String(usuarioId));
+        return repository.findByUsuarioId(new ObjectId(usuarioId));
     }
 
     @Override

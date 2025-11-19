@@ -41,26 +41,35 @@ public class ObservacionesController {
     @PreAuthorize("hasRole('ADMIN')")
     public String observacionesManagement(Model model) {
         List<Observacion> observaciones = observacionService.all();
-        
+
         List<ObservacionDTO> observacionDTOs = observaciones.stream()
             .map(obs -> {
                 ObservacionDTO dto = new ObservacionDTO();
                 dto.setId(obs.getId());
                 dto.setComentario(obs.getComentario());
                 dto.setFecha(obs.getFecha());
-                
-                // Obtener nombre del usuario
-                Optional<Usuario> usuario = usuarioService.findById(obs.getUsuarioId().toString());
+
+                // Validar usuarioId no nulo
+                String usuarioIdStr = (obs.getUsuarioId() != null) ? obs.getUsuarioId().toHexString() : null;
+                Optional<Usuario> usuario = (usuarioIdStr != null) ? usuarioService.findById(usuarioIdStr) : Optional.empty();
                 dto.setUsuarioNombre(usuario.map(Usuario::getNombre).orElse("Usuario Desconocido"));
-                
-                // Obtener nombre de la especie
-                MariposaDetalleDTO especie = butterflyService.findDetailsById(obs.getEspecieId().toString());
+
+                // Validar especieId no nulo y usar toHexString si es ObjectId
+                String especieIdStr = null;
+                if (obs.getEspecieId() != null) {
+                    if (obs.getEspecieId() instanceof ObjectId) {
+                        especieIdStr = ((ObjectId) obs.getEspecieId()).toHexString();
+                    } else {
+                        especieIdStr = obs.getEspecieId().toString();
+                    }
+                }
+                MariposaDetalleDTO especie = (especieIdStr != null) ? butterflyService.findDetailsById(especieIdStr) : null;
                 dto.setEspecieNombre(especie != null ? especie.getNombreComun() : "Especie Desconocida");
-                
+
                 return dto;
             })
             .collect(Collectors.toList());
-        
+
         model.addAttribute("observaciones", observacionDTOs);
         return "Admin/observacionesManagement";
     }
