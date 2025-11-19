@@ -1,6 +1,7 @@
 package com.andres.mariposita3d.Collection;
 
 import lombok.Data;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -65,6 +66,7 @@ public class Ubicacion {
 
     public static class GeoPoint {
         private String type = "Point";
+        @Setter
         private double[] coordinates;
 
         public GeoPoint() {}
@@ -81,8 +83,5 @@ public class Ubicacion {
             return coordinates;
         }
 
-        public void setCoordinates(double[] coordinates) {
-            this.coordinates = coordinates;
-        }
     }
 }
