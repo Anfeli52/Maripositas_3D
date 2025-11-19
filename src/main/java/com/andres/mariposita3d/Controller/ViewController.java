@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
+import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
+import com.andres.mariposita3d.Service.EspecieMariposaService;
+import com.andres.mariposita3d.Service.ObservacionService;
 
 @Controller
 public class ViewController {
@@ -42,4 +44,15 @@ public class ViewController {
         return "Admin/registroMariposa";
     }
 
+    @GetMapping("/user/mapa")
+    @PreAuthorize("hasRole('USER')")
+    public String userMapa() {
+        return "User/mapa";
+    }
+
+    @GetMapping("/admin/mapa")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminMapa() {
+        return "Admin/mapa";
+    }
 }

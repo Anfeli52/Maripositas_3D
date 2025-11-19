@@ -1,0 +1,60 @@
+:root {
+    --navbar-offset: calc((var(--nav-padding-y, 20px) * 2) + max(var(--avatar-size, 38px), 24px));
+    --radius-md: .45rem;
+    --radius-sm: .35rem;
+    --shadow-nav: 0 5px 10px rgba(0, 0, 0, 0.1);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.container {
+    margin-top: var(--navbar-offset);
+    padding: var(--nav-padding-y, 20px) var(--nav-padding-x, 100px);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container > h1 {
+    margin: 0 0 24px;
+    text-align: center;
+    font-size: 1.75rem;
+    color: #333;
+    letter-spacing: .5px;
+    font-weight: 600;
+}
+
+.mapa-container {
+    background: #fff;
+    padding: 32px 40px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-nav);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 300px;
+}
+
+.mapa-container p {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 780px) {
+    .container {
+        padding: var(--nav-padding-y, 20px) 16px;
+    }
+    .mapa-container {
+        padding: 24px 20px;
+    }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

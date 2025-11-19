@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/CSS/navbar.css}">
+    <link rel="stylesheet" th:href="@{/CSS/observacionesManagement.css}">
+    <title>Gestión de Observaciones</title>
+</head>
+<body>
+    <nav th:replace="~{Admin/fragment_admin :: adminNavbar}"></nav>
+    <section class="observaciones-section">
+        <h1>Observaciones de Usuarios</h1>
+
+        <div th:if="${observaciones.isEmpty()}" class="empty-state">
+            <p>No hay observaciones registradas aún.</p>
+        </div>
+
+        <div th:if="${!observaciones.isEmpty()}" class="observaciones-container">
+            <div class="observacion-card" th:each="obs : ${observaciones}">
+                <div class="card-header">
+                    <h3 th:text="${obs.especieNombre}">Nombre Mariposa</h3>
+                    <span class="badge-usuario" th:text="${obs.usuarioNombre}">Usuario</span>
+                </div>
+
+                <div class="card-body">
+                    <p class="comentario" th:text="${obs.comentario}">Comentario</p>
+                    <p class="fecha" th:text="${#dates.format(obs.fecha, 'dd/MM/yyyy HH:mm')}">Fecha</p>
+                </div>
+
+                <div class="card-actions">
+                    <form th:action="@{/admin/observacion/{id}/rechazar(id=${obs.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-rechazar" onclick="return confirm('¿Rechazar esta observación?');">Rechazar</button>
+                    </form>
+                    <form th:action="@{/admin/observacion/{id}/aprobar(id=${obs.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-aprobar">Aprobar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <a th:href="@{/admin/main}" class="btn-volver">Volver al Dashboard</a>
+        </div>
+    </section>
+</body>
+</html>

@@ -136,6 +136,7 @@ function mapUserFormToDTO(formData) {
         id: formData.get('user-edit-id'),
         nombre: formData.get('user-edit-nombre'),
         correo: formData.get('user-edit-correo'),
+        rol: formData.get('user-edit-rol'),
     };
 }
 
@@ -218,6 +219,28 @@ async function handleFormSubmit(event, apiUrl, modalId, dtoMapperFunction) {
     }
 }
 
+function deleteUser(userId) {
+    if (!userId) return;
+    if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
+    fetch(`${USER_API_URL}/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Usuario eliminado correctamente.');
+            window.location.reload();
+        } else {
+            alert('Error al eliminar el usuario.');
+        }
+    })
+    .catch(error => {
+        alert('Error de conexión con el servidor.');
+        console.error(error);
+    });
+}
 
 // =======================================================
 // F. INICIALIZACIÓN

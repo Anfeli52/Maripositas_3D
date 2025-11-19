@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.bson.types.ObjectId;
 
 import com.andres.mariposita3d.Collection.Observacion;
 import com.andres.mariposita3d.Repository.ObservacionRepository;
@@ -44,7 +45,7 @@ public class ObservacionService implements IObservacionService {
 
     @Override
     public List<Observacion> findByUsuarioId(String usuarioId) {
-        return repository.findByUsuarioId(usuarioId);
+        return repository.findByUsuarioId(new ObjectId(usuarioId));
     }
 
     @Override
