@@ -1,6 +1,7 @@
 package com.andres.mariposita3d.Controller;
 
-import java.util.List;
+import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
+import com.andres.mariposita3d.Service.EspecieMariposaService;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,9 @@ import com.andres.mariposita3d.Service.ObservacionService;
 public class ViewController {
 
     private final EspecieMariposaService butterflyService;
-    private final ObservacionService observacionService;
 
-    public ViewController(EspecieMariposaService butterflyService, ObservacionService observacionService) {
+    public ViewController(EspecieMariposaService butterflyService) {
         this.butterflyService = butterflyService;
-        this.observacionService = observacionService;
     }
 
     @GetMapping("/main")
