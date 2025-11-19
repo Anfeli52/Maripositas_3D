@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
-import com.andres.mariposita3d.Service.EspecieMariposaService;
-import com.andres.mariposita3d.Service.ObservacionService;
+import java.util.List;
 
 @Controller
 public class ViewController {

@@ -18,13 +18,14 @@
             <button class="register-buttlerfly-btn">
                 <a th:href="@{/admin/registroMariposa}">Registrar Nueva Mariposa</a>
             </button>
-            <a th:href="@{/admin/observaciones}" style="display: inline-block; padding: .65rem 1.2rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; text-decoration: none; font-size: .85rem; font-weight: 600; letter-spacing: .6px; border-radius: .45rem; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: transform .15s, box-shadow .2s;">Ver Observaciones</a>
+            <button class="see-observations-btn">
+                <a th:href="@{/admin/observaciones}">Ver Observaciones</a>
+            </button>
         </div>
 
         <table class="buttlerflys-table">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Nombre Científico</th>
                     <th>Nombre Común</th>
                     <th>Familia</th>
@@ -38,7 +39,6 @@
             </thead>
             <tbody>
                 <tr th:each="butterfly : ${butterflies}">
-                    <td th:text="${butterfly.id}">Id</td>
                     <td th:text="${butterfly.nombreCientifico}">Nombre Científico</td>
                     <td th:text="${butterfly.nombreComun}">Nombre Común</td>
                     <td th:text="${butterfly.familia}">Familia</td>

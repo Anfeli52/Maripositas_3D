@@ -242,8 +242,74 @@ function deleteUser(userId) {
     });
 }
 
+
+
 // =======================================================
-// F. INICIALIZACIÓN
+// F. FUNCIÓN PARA ELIMINAR UNA MARIPOSA
+// =======================================================
+
+
+async function deleteButterflyCascade(id) {
+    if (!id) return;
+    
+    // Confirmación elegante con SweetAlert2
+    const result = await Swal.fire({
+        title: '¿Eliminar esta especie?',
+        html: `
+            <p>Se eliminarán <b>todas las observaciones</b> asociadas.</p>
+            <p style="color: #dc2626; font-weight: 600;">Esta acción es <b>permanente</b>.</p>
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        focusCancel: true
+    });
+
+    if (!result.isConfirmed) return;
+
+    const loadingAlert = swLoading('Eliminando especie...');
+
+    try {
+        const response = await fetch(`${BUTTERFLY_API_URL}/${id}?cascade=true`, {
+            method: 'DELETE',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+
+        loadingAlert.close();
+
+        if (response.status === 204) {
+            // Éxito
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Eliminada!',
+                text: 'La especie y sus observaciones fueron eliminadas.',
+                confirmButtonColor: '#10b981',
+                timer: 2000,
+                timerProgressBar: true
+            });
+            window.location.reload();
+        } else if (response.status === 404) {
+            swError('No encontrada', 'La especie no existe.');
+        } else if (response.status === 409) {
+            // Conflicto (si usas cascade=false)
+            const error = await response.json().catch(() => ({}));
+            swError('No se puede eliminar', error.message || 'Tiene observaciones asociadas.');
+        } else {
+            swError('Error', `Código: ${response.status}`);
+        }
+    } catch (error) {
+        loadingAlert.close();
+        console.error('Error al eliminar:', error);
+        swError('Error de Red', 'No se pudo conectar con el servidor.', error.message);
+    }
+}
+
+
+// =======================================================
+// G. INICIALIZACIÓN
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
