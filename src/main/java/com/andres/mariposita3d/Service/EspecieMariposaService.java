@@ -151,7 +151,13 @@ public class EspecieMariposaService {
 
         System.out.println("Soy yo nueva nuevamente, esto funciona otra vez hasta aquí, por ahora, creo, información: "+data.toString());
 
-        ubicacionRepository.save(ubicacion);
+        try {
+            ubicacionRepository.save(ubicacion);
+        } catch (Exception e) {
+            System.err.println("!!! ERROR FATAL AL GUARDAR LA UBICACION !!!");
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public void deleteEspecieConObservaciones(String id) {
@@ -218,4 +224,7 @@ public class EspecieMariposaService {
         return results.getMappedResults();
     }
 
+    public EspecieMariposa save(EspecieMariposa especieMariposa) {
+        return especieMariposaRepository.save(especieMariposa);
+    }
 }

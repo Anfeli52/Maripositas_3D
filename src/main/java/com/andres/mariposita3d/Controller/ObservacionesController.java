@@ -90,9 +90,7 @@ public class ObservacionesController {
 
     @GetMapping("/observacion/nueva/{especieId}")
     @PreAuthorize("hasRole('USER')")
-    public String showObservationForm(@PathVariable String especieId,
-                                      @RequestParam(name = "nombre", required = false) String nombre,
-                                      Model model) {
+    public String showObservationForm(@PathVariable String especieId, @RequestParam(name = "nombre", required = false) String nombre, Model model) {
         model.addAttribute("especieId", especieId);
         model.addAttribute("especieNombre", nombre);
         return "User/nuevaObservacion";
@@ -104,7 +102,7 @@ public class ObservacionesController {
                                     @RequestParam("comentario") String comentario,
                                     @AuthenticationPrincipal Usuario usuario) {
         // Convertir el id del usuario a ObjectId antes de crear la observación
-        ObjectId usuarioObjectId = new ObjectId(usuario.getId());
+        ObjectId usuarioObjectId = usuario.getId();
         Observacion observacion = new Observacion(especieId, usuarioObjectId, comentario, null);
         observacionService.save(observacion);
         return "redirect:/main?observacion=creada";

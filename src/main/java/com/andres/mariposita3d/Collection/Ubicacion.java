@@ -2,16 +2,19 @@ package com.andres.mariposita3d.Collection;
 
 import lombok.Data;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
 
 @Data
 @Document("ubicaciones")
 public class Ubicacion {
 
     @Id
-    private String id;
+    private ObjectId id;
 
     @Field("localidad")
     private String localidad;
@@ -33,6 +36,9 @@ public class Ubicacion {
 
     @Field("ecosistema")
     private String ecosistema;
+
+    @Field("fecha_registro")
+    private Date fechaRegistro;
 
     public Ubicacion() {}
 
