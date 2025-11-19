@@ -1,12 +1,54 @@
+// Asegúrate de incluir la librería SweetAlert2 en tu HTML:
+// <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 // =======================================================
-// A. LÓGICA GENÉRICA DE MODALES (UI)
+// A. UTILIDADES SWEETALERT2 (Avisos) 🔔
 // =======================================================
+
+function swSuccess(title, text) {
+    Swal.fire({
+        icon: 'success',
+        title,
+        text,
+        confirmButtonColor: '#1d6fd6',
+        timer: 1500, // Se cierra automáticamente
+        timerProgressBar: true
+    });
+}
+
+function swError(title, text, footer = '') {
+    Swal.fire({
+        icon: 'error',
+        title,
+        text,
+        footer: footer, // Útil para mostrar detalles del error HTTP
+        confirmButtonColor: '#d33'
+    });
+}
+
+function swLoading(message = 'Procesando, por favor espere...') {
+    return Swal.fire({
+        title: message,
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
+}
+
+// =======================================================
+// B. MODALES HTML (Contenedores de Edición)
+// =======================================================
+// Mantenemos estas funciones con ligeras modificaciones.
 
 function getModalAndForm(modalId, formId) {
     const modal = document.getElementById(modalId);
     const form = document.getElementById(formId);
     if (!modal || !form) {
         console.error(`Modal o formulario no encontrado: ${modalId} / ${formId}`);
+        // Usamos SweetAlert2 para errores de UI
+        swError('Error de Interfaz', `El modal o formulario ${modalId} no fue encontrado.`);
         return null;
     }
     return { modal, form };
@@ -26,22 +68,17 @@ function openModal(modalId) {
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    const errorMessage = document.getElementById(`${modalId.replace('Modal', '')}-error-message`);
-
+    // Eliminamos la dependencia de 'errorMessage' ya que SweetAlert maneja los errores
     if (modal) {
         modal.style.display = 'none';
-
         const form = modal.querySelector('form');
-        
         if (form) form.reset();
-        if (errorMessage) errorMessage.textContent = '';
-
         window.onclick = null;
     }
 }
 
 // =======================================================
-// B. LÓGICA ESPECÍFICA DE EDICIÓN DE MARIPOSAS
+// C. LÓGICA ESPECÍFICA DE EDICIÓN DE MARIPOSAS
 // =======================================================
 
 const BUTTERFLY_MODAL_ID = 'editModal';
@@ -52,6 +89,7 @@ function loadButterflyDataToForm(data) {
     document.getElementById("edit-id").value = data.id;
     document.getElementById("edit-ubicacion-id").value = data.ubicacionRecoleccionId;
     document.getElementById("edit-nombre-cientifico").value = data.nombreCientifico;
+    document.getElementById("edit-nombre-comun").value = data.nombreComun || ''; // Manejo de nulo
     document.getElementById("edit-familia").value = data.familia;
     document.getElementById("edit-descripcion").value = data.descripcion;
     document.getElementById("edit-departamento").value = data.departamento;
@@ -65,6 +103,7 @@ function mapButterflyFormToDTO(formData) {
         id: formData.get('edit-id'),
         ubicacionRecoleccionId: formData.get('edit-ubicacion-id'),
         nombreCientifico: formData.get('edit-nombre-cientifico'),
+        nombreComun: formData.get('edit-nombre-comun'),
         familia: formData.get('edit-familia'),
         descripcion: formData.get('edit-descripcion'),
         departamento: formData.get('edit-departamento'),
@@ -73,27 +112,23 @@ function mapButterflyFormToDTO(formData) {
     };
 }
 
-// Función pública para abrir la modal de Mariposa (llamada desde el HTML)
 function openModalUpdateButterfly(butterflyId) {
     if (!butterflyId) return;
-
-    // Aquí puedes usar tu lógica de fetchAndOpenModal mejorada con manejo de errores y AJAX
     fetchDataAndOpenModal(`${BUTTERFLY_API_URL}/${butterflyId}`, BUTTERFLY_MODAL_ID, loadButterflyDataToForm);
 }
 
 // =======================================================
-// C. LÓGICA ESPECÍFICA DE EDICIÓN DE USUARIOS
+// D. LÓGICA ESPECÍFICA DE EDICIÓN DE USUARIOS
 // =======================================================
 
-const USER_MODAL_ID = 'editUserModal'; // Debes crear un nuevo ID para esta modal
-const USER_FORM_ID = 'editUserForm';   // Debes crear un nuevo ID para este formulario
-const USER_API_URL = '/api/usuarios';  // Asume esta ruta para tu API de Usuario
+const USER_MODAL_ID = 'editUserModal'; 
+const USER_FORM_ID = 'editUserForm';   
+const USER_API_URL = '/api/usuarios';  
 
 function loadUserDataToForm(data) {
     document.getElementById("user-edit-id").value = data.id;
     document.getElementById("user-edit-nombre").value = data.nombre;
     document.getElementById("user-edit-correo").value = data.correo;
-
 }
 
 function mapUserFormToDTO(formData) {
@@ -109,63 +144,83 @@ function openModalUpdateUser(userId) {
     fetchDataAndOpenModal(`${USER_API_URL}/${userId}`, USER_MODAL_ID, loadUserDataToForm);
 }
 
-
 // =======================================================
-// D. FUNCIONES DE UTILIDAD (FETCH Y MANEJO DE ENVÍO)
+// E. FUNCIONES DE UTILIDAD (FETCH Y MANEJO DE ENVÍO)
 // =======================================================
 
-function fetchDataAndOpenModal(url, modalId, dataMapperFunction) {
-    fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        .then(response => {
-            if (!response.ok) {
-                // Aquí puedes reintroducir tu lógica robusta de manejo de 401/302/JSON/HTML
-                // Por simplicidad, usando la versión básica
-                return response.json().then(err => { throw new Error(err.message || response.statusText); });
-            }
-            return response.json();
-        })
-        .then(data => {
-            dataMapperFunction(data);
-            openModal(modalId);
-        })
-        .catch(error => {
-            console.error('Error al cargar detalles:', error);
-            alert('Error: No se pudieron cargar los detalles. ' + error.message);
-        });
+async function fetchDataAndOpenModal(url, modalId, dataMapperFunction) {
+    const loadingAlert = swLoading('Cargando detalles de la mariposa...');
+    
+    try {
+        const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        
+        if (!response.ok) {
+            // Intenta leer el mensaje de error del cuerpo de la respuesta (JSON)
+            const errorBody = await response.json().catch(() => ({})); 
+            throw new Error(errorBody.message || `HTTP ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        loadingAlert.close(); // Cierra el spinner de carga
+        
+        dataMapperFunction(data);
+        openModal(modalId);
+        
+    } catch(error) {
+        loadingAlert.close();
+        console.error('Error al cargar detalles:', error);
+        swError('Error de Carga', 'No se pudieron cargar los detalles.', error.message);
+    }
 }
 
-function handleFormSubmit(event, apiUrl, modalId, dtoMapperFunction) {
+async function handleFormSubmit(event, apiUrl, modalId, dtoMapperFunction) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const data = dtoMapperFunction(formData);
 
-    fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: JSON.stringify(data)
-    }).then(response => {
-        if (response.ok) {
-            alert('¡Actualización exitosa!');
+    const loadingAlert = swLoading('Guardando cambios...');
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify(data)
+        });
+
+        loadingAlert.close(); // Cierra el spinner de carga
+
+        if (response.ok || response.status === 204) {
+            // Muestra éxito y recarga la página
+            swSuccess('¡Actualización exitosa!', 'Los datos se han guardado correctamente.');
             closeModal(modalId);
-            window.location.reload();
+            setTimeout(() => window.location.reload(), 700);
         } else {
-            document.getElementById(`${modalId.replace('Modal', '')}-error-message`).textContent =
-                `Error al guardar los cambios. Código: ${response.status}`;
+            // Manejo de errores de servidor
+            let errorDetail = `Error ${response.status}.`;
+            try {
+                const errorBody = await response.json();
+                errorDetail = errorBody.message || errorDetail;
+            } catch {} // Si no es JSON, usa el error por defecto
+            
+            // Muestra el error usando SweetAlert2
+            swError('Error al Guardar', `No se pudo actualizar la mariposa.`, errorDetail);
         }
-    }).catch(error => {
+    } catch(error) {
+        loadingAlert.close();
         console.error('Error de red: ', error);
-        document.getElementById(`${modalId.replace('Modal', '')}-error-message`).textContent =
-            'Error de conexión con el servidor.';
-    });
+        // Muestra error de conexión
+        swError('Error de Conexión', 'No se pudo contactar al servidor.', `Mensaje: ${error.message}`);
+    }
 }
 
 
 // =======================================================
-// E. INICIALIZACIÓN
+// F. INICIALIZACIÓN
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {

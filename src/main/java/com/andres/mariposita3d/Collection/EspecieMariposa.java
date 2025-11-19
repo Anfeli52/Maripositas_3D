@@ -4,6 +4,7 @@ import com.andres.mariposita3d.Collection.Embedded.CaracteristicaMorfo;
 import com.andres.mariposita3d.Collection.Embedded.ImagenDetallada;
 import com.andres.mariposita3d.Enum.TipoEspecie;
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -28,8 +29,8 @@ public class EspecieMariposa {
     private ImagenDetallada imagenDetallada;
     private CaracteristicaMorfo caracteristicaMorfo;
 
-    private String ubicacionRecoleccionId;
-    private String registradoPorId;
+    private ObjectId ubicacionRecoleccionId;
+    private ObjectId registradoPorId;
     private Date fechaRegistro;
 
 

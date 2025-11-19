@@ -100,7 +100,10 @@ public class EspecieMariposaService {
             throw new IllegalArgumentException("IDs de Especie o Ubicación faltantes.");
         }
 
+        System.out.println("Estoy aquí con esta información: "+data.toString());
+
         updateEspecieMariposaData(data);
+        System.out.println("Pasé el primer método :D");
         updateUbicacionData(data);
     }
 
@@ -114,10 +117,22 @@ public class EspecieMariposaService {
         especie.setFamilia(data.getFamilia());
         especie.setDescripcion(data.getDescripcion());
 
-        especieMariposaRepository.save(especie);
+        System.out.println("Soy yo nuevamente, esto funciona aquí, por ahora, información: "+data.toString());
+
+        try { // <--- AÑADE ESTE TRY
+            especieMariposaRepository.save(especie);
+        } catch (Exception e) {
+            System.err.println("!!! ERROR FATAL AL GUARDAR LA ESPECIE MARIPOSA !!!");
+            e.printStackTrace(); // <--- IMPRIME EL ERROR REAL
+            throw e; // Re-lanza la excepción para que el controlador la capture
+        }
+
     }
 
     private void updateUbicacionData(MariposaDetalleDTO data) {
+
+        System.out.println("Funciono?");
+
         Ubicacion ubicacion = ubicacionRepository.findById(
                 data.getUbicacionRecoleccionId()).orElseThrow(() -> new NoSuchElementException("Ubicación asociada no encontrada con ID: " + data.getUbicacionRecoleccionId())
         );
@@ -125,6 +140,8 @@ public class EspecieMariposaService {
         ubicacion.setDepartamento(data.getDepartamento());
         ubicacion.setMunicipio(data.getMunicipio());
         ubicacion.setLocalidad(data.getLocalidad());
+
+        System.out.println("Soy yo nueva nuevamente, esto funciona otra vez hasta aquí, por ahora, creo, información: "+data.toString());
 
         ubicacionRepository.save(ubicacion);
     }

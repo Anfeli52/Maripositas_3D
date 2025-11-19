@@ -31,10 +31,11 @@ public class MariposaRestController {
         return details;
     }
 
-    @PutMapping
+    @PatchMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateButterfly(@RequestBody MariposaDetalleDTO editedData) {
         try {
+            System.out.println("Pasé por aquí con esta información: "+editedData.toString());
             especieMariposaService.updateMariposa(editedData);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {

@@ -21,6 +21,7 @@
         <table class="buttlerflys-table">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Nombre Científico</th>
                     <th>Nombre Común</th>
                     <th>Familia</th>
@@ -34,6 +35,7 @@
             </thead>
             <tbody>
                 <tr th:each="butterfly : ${butterflies}">
+                    <td th:text="${butterfly.id}">Id</td>
                     <td th:text="${butterfly.nombreCientifico}">Nombre Científico</td>
                     <td th:text="${butterfly.nombreComun}">Nombre Común</td>
                     <td th:text="${butterfly.familia}">Familia</td>
@@ -48,7 +50,8 @@
                         <!-- Llama a la función JS y pasa el ID de la mariposa -->
                         <button class="edit-btn" onclick="openModalUpdateButterfly(this.getAttribute('data-id'))"
                             th:data-id="${butterfly.id}">Editar</button>
-                        <button class="delete-btn">Eliminar</button>
+                        <button class="delete-btn" onclick="deleteButterflyCascade(this.getAttribute('data-id'))"
+                            th:data-id="${butterfly.id}">Eliminar</button>
                     </td>
                 </tr>
             </tbody>
@@ -62,7 +65,7 @@
             <span class="close-button" onclick="closeModal('editModal')">&times;</span>
             <h2>Editar Especie: <span id="edit-nombre-cientifico-display"></span></h2>
 
-            <form id="editForm">
+            <form id="editForm" class="modal-form">
                 <input type="hidden" id="edit-id" name="edit-id">
                 <input type="hidden" id="edit-ubicacion-id" name="edit-ubicacion-id">
 
@@ -70,6 +73,9 @@
                     <legend>Datos de Especie</legend>
                     <label for="edit-nombre-cientifico">Nombre Científico:</label>
                     <input type="text" id="edit-nombre-cientifico" name="edit-nombre-cientifico" required>
+
+                    <label for="edit-nombre-comun">Nombre Común:</label>
+                    <input type="text" id="edit-nombre-comun" name="edit-nombre-comun">
 
                     <label for="edit-familia">Familia:</label>
                     <input type="text" id="edit-familia" name="edit-familia">
@@ -90,13 +96,16 @@
                     <input type="text" id="edit-localidad" name="edit-localidad">
                 </fieldset>
 
-                <div id="edit-error-message" style="color: red; margin-bottom: 10px;"></div>
-                <button type="submit" class="save-btn">Guardar Cambios</button>
+                <div id="edit-error-message"></div>
+                <div class="modal-actions">
+                    <button type="submit" class="save-btn">Guardar Cambios</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- Carga el script modular al final -->
+    <!-- AGREGAR SWEETALERT2 ANTES DE script.js -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script th:src="@{/JS/script.js}"></script>
 </body>
 
