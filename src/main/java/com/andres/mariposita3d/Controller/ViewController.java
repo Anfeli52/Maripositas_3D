@@ -86,7 +86,7 @@ public class ViewController {
         EspecieMariposa especieMariposa = mapDtoToEntity(formDTO);
 
         Usuario usuarioActual = (Usuario) authentication.getPrincipal();
-        ObjectId registradoPorId = usuarioActual.getId();
+        ObjectId registradoPorId = new ObjectId(usuarioActual.getId());
 
         especieMariposa.setRegistradoPorId(registradoPorId);
         especieMariposa.setFechaRegistro(new Date());

@@ -102,7 +102,7 @@ public class ObservacionesController {
                                     @RequestParam("comentario") String comentario,
                                     @AuthenticationPrincipal Usuario usuario) {
         // Convertir el id del usuario a ObjectId antes de crear la observación
-        ObjectId usuarioObjectId = usuario.getId();
+        ObjectId usuarioObjectId = new ObjectId(usuario.getId());
         Observacion observacion = new Observacion(especieId, usuarioObjectId, comentario, null);
         observacionService.save(observacion);
         return "redirect:/main?observacion=creada";
