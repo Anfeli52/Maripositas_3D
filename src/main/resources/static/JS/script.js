@@ -1,6 +1,3 @@
-// Asegúrate de incluir la librería SweetAlert2 en tu HTML:
-// <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 // =======================================================
 // A. UTILIDADES SWEETALERT2 (Avisos) 🔔
 // =======================================================
@@ -11,7 +8,7 @@ function swSuccess(title, text) {
         title,
         text,
         confirmButtonColor: '#1d6fd6',
-        timer: 1500, // Se cierra automáticamente
+        timer: 1500,
         timerProgressBar: true
     });
 }
@@ -21,7 +18,7 @@ function swError(title, text, footer = '') {
         icon: 'error',
         title,
         text,
-        footer: footer, // Útil para mostrar detalles del error HTTP
+        footer: footer,
         confirmButtonColor: '#d33'
     });
 }
@@ -40,8 +37,6 @@ function swLoading(message = 'Procesando, por favor espere...') {
 // =======================================================
 // B. MODALES HTML (Contenedores de Edición)
 // =======================================================
-// Mantenemos estas funciones con ligeras modificaciones.
-
 function getModalAndForm(modalId, formId) {
     const modal = document.getElementById(modalId);
     const form = document.getElementById(formId);
@@ -129,6 +124,7 @@ function loadUserDataToForm(data) {
     document.getElementById("user-edit-id").value = data.id;
     document.getElementById("user-edit-nombre").value = data.nombre;
     document.getElementById("user-edit-correo").value = data.correo;
+    document.getElementById("user-edit-rol").value = data.rol;
 }
 
 function mapUserFormToDTO(formData) {
@@ -156,14 +152,13 @@ async function fetchDataAndOpenModal(url, modalId, dataMapperFunction) {
         const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
         
         if (!response.ok) {
-            // Intenta leer el mensaje de error del cuerpo de la respuesta (JSON)
             const errorBody = await response.json().catch(() => ({})); 
             throw new Error(errorBody.message || `HTTP ${response.status} ${response.statusText}`);
         }
 
         const data = await response.json();
         
-        loadingAlert.close(); // Cierra el spinner de carga
+        loadingAlert.close();
         
         dataMapperFunction(data);
         openModal(modalId);
@@ -193,56 +188,92 @@ async function handleFormSubmit(event, apiUrl, modalId, dtoMapperFunction) {
             body: JSON.stringify(data)
         });
 
-        loadingAlert.close(); // Cierra el spinner de carga
+        loadingAlert.close();
 
         if (response.ok || response.status === 204) {
-            // Muestra éxito y recarga la página
             swSuccess('¡Actualización exitosa!', 'Los datos se han guardado correctamente.');
             closeModal(modalId);
             setTimeout(() => window.location.reload(), 700);
         } else {
-            // Manejo de errores de servidor
             let errorDetail = `Error ${response.status}.`;
             try {
                 const errorBody = await response.json();
                 errorDetail = errorBody.message || errorDetail;
-            } catch {} // Si no es JSON, usa el error por defecto
-            
-            // Muestra el error usando SweetAlert2
+            } catch {}
+
             swError('Error al Guardar', `No se pudo actualizar la mariposa.`, errorDetail);
         }
     } catch(error) {
         loadingAlert.close();
         console.error('Error de red: ', error);
-        // Muestra error de conexión
         swError('Error de Conexión', 'No se pudo contactar al servidor.', `Mensaje: ${error.message}`);
     }
 }
 
-function deleteUser(userId) {
+async function deleteUser(userId) {
     if (!userId) return;
-    if (!confirm('¿Seguro que deseas eliminar este usuario?')) return;
-    fetch(`${USER_API_URL}/${userId}`, {
-        method: 'DELETE',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Usuario eliminado correctamente.');
-            window.location.reload();
-        } else {
-            alert('Error al eliminar el usuario.');
-        }
-    })
-    .catch(error => {
-        alert('Error de conexión con el servidor.');
-        console.error(error);
+
+    // 1. Confirmación elegante con SweetAlert2
+    const result = await Swal.fire({
+        title: '¿Eliminar este usuario?',
+        html: `
+            <p>Esta acción eliminará la cuenta del usuario.</p>
+            <p style="color: #dc2626; font-weight: 600;">Esta acción es <b>permanente</b>.</p>
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626', // Rojo para la acción peligrosa
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        focusCancel: true
     });
+
+    if (!result.isConfirmed) return;
+
+    // 2. Mostrar spinner de carga (Usando la utilidad swLoading)
+    // Usamos el patrón de Swal.fire().showLoading() ya que swLoading fue modificado.
+    Swal.fire({
+        title: 'Eliminando usuario...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    try {
+        const response = await fetch(`${USER_API_URL}/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        Swal.close(); // Cerrar spinner al recibir respuesta
+
+        if (response.ok || response.status === 204) {
+            // Éxito: código 204 No Content es común en DELETE
+            await swSuccess('¡Eliminado!', 'El usuario ha sido eliminado correctamente.');
+            window.location.reload();
+        } else if (response.status === 404) {
+            swError('No encontrado', 'El usuario que intentas eliminar no existe.');
+        } else {
+            // Manejo de otros errores (400, 409, 500, etc.)
+            let errorDetail = `Error ${response.status}.`;
+            try {
+                const errorBody = await response.json();
+                errorDetail = errorBody.message || errorDetail;
+            } catch {}
+
+            swError('Error al Eliminar', `No se pudo eliminar el usuario.`, errorDetail);
+        }
+    } catch (error) {
+        Swal.close();
+        console.error('Error de red: ', error);
+        swError('Error de Conexión', 'No se pudo conectar con el servidor.', `Mensaje: ${error.message}`);
+    }
 }
-
-
 
 // =======================================================
 // F. FUNCIÓN PARA ELIMINAR UNA MARIPOSA
@@ -251,8 +282,6 @@ function deleteUser(userId) {
 
 async function deleteButterflyCascade(id) {
     if (!id) return;
-    
-    // Confirmación elegante con SweetAlert2
     const result = await Swal.fire({
         title: '¿Eliminar esta especie?',
         html: `
@@ -281,7 +310,6 @@ async function deleteButterflyCascade(id) {
         loadingAlert.close();
 
         if (response.status === 204) {
-            // Éxito
             await Swal.fire({
                 icon: 'success',
                 title: '¡Eliminada!',
@@ -294,7 +322,6 @@ async function deleteButterflyCascade(id) {
         } else if (response.status === 404) {
             swError('No encontrada', 'La especie no existe.');
         } else if (response.status === 409) {
-            // Conflicto (si usas cascade=false)
             const error = await response.json().catch(() => ({}));
             swError('No se puede eliminar', error.message || 'Tiene observaciones asociadas.');
         } else {
@@ -306,7 +333,6 @@ async function deleteButterflyCascade(id) {
         swError('Error de Red', 'No se pudo conectar con el servidor.', error.message);
     }
 }
-
 
 // =======================================================
 // G. INICIALIZACIÓN

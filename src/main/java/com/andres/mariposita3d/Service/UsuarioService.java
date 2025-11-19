@@ -33,6 +33,13 @@ public class UsuarioService implements IUsuarioService {
         return repository.save(usuario);
     }
 
+    public void updateUser(Usuario usuario) {
+        if(usuario.getId() == null ||  usuario.getId().equals("")) {
+            throw new IllegalArgumentException("El id del usuario no puede ser nulo");
+        }
+        repository.save(usuario);
+    }
+
     @Override
     public void delete(String id) {
         if (repository.existsById(id)) {
