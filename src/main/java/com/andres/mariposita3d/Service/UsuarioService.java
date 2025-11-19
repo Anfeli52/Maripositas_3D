@@ -2,6 +2,7 @@ package com.andres.mariposita3d.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,13 @@ public class UsuarioService implements IUsuarioService {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         }
+    }
+
+    @Override
+    public List<Usuario> allExcluding(String idToExclude) {
+        List<Usuario> allUsers = repository.findAll();
+        return allUsers.stream()
+                .filter(user -> !user.getId().toString().equals(idToExclude))
+                .collect(Collectors.toList());
     }
 }

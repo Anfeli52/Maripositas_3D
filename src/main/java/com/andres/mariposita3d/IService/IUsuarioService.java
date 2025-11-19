@@ -15,4 +15,7 @@ public interface IUsuarioService {
     public Usuario save(Usuario usuario);
 
     public void delete(String id);
+
+    List<Usuario> allExcluding(String idToExclude);
+
 }
