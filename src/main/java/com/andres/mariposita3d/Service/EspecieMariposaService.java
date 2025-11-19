@@ -3,6 +3,7 @@ package com.andres.mariposita3d.Service;
 import com.andres.mariposita3d.Collection.EspecieMariposa;
 import com.andres.mariposita3d.Collection.Ubicacion;
 import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
+import com.andres.mariposita3d.DTO.MariposaMapaDTO;
 import com.andres.mariposita3d.Repository.EspecieMariposaRepository;
 import com.andres.mariposita3d.Repository.UbicacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,6 +128,36 @@ public class EspecieMariposaService {
         ubicacion.setLocalidad(data.getLocalidad());
 
         ubicacionRepository.save(ubicacion);
+    }
+
+    public List<MariposaMapaDTO> findAllForMap() {
+
+        LookupOperation lookup = Aggregation.lookup(
+                "ubicaciones",
+                "ubicacionRecoleccionId",
+                "_id",
+                "detallesUbicacion"
+        );
+
+        UnwindOperation unwind = Aggregation.unwind("detallesUbicacion");
+        ProjectionOperation projection = Aggregation.project()
+                .and("nombreCientifico").as("nombreCientifico")
+                .and("nombreComun").as("nombreComun")
+                .and("familia").as("familia")
+                .and("detallesUbicacion.localidad").as("localidad")
+                .and("detallesUbicacion.municipio").as("municipio")
+                .and("detallesUbicacion.departamento").as("departamento")
+                .and("detallesUbicacion.geolocalizacion.latitud").as("lat")  // Mapea latitud a 'lat'
+                .and("detallesUbicacion.geolocalizacion.longitud").as("lon"); // Mapea longitud a 'lon'
+
+        Aggregation aggregation = Aggregation.newAggregation(lookup, unwind, projection);
+        AggregationResults<MariposaMapaDTO> results = mongoTemplate.aggregate(
+                aggregation,
+                "especieMariposa",
+                MariposaMapaDTO.class
+        );
+
+        return results.getMappedResults();
     }
 
 }

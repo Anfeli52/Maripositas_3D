@@ -14,9 +14,7 @@ import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 public class MongoConfig {
 
     @Bean
-    public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory mongoDbFactory,
-                                                       MongoCustomConversions customConversions,
-                                                       MongoMappingContext mappingContext) {
+    public MappingMongoConverter mappingMongoConverter(MongoDatabaseFactory mongoDbFactory, MongoCustomConversions customConversions, MongoMappingContext mappingContext) {
         DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDbFactory);
         MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mappingContext);
         // Evita que se escriba el campo _class en los documentos

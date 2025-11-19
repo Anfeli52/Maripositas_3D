@@ -9,17 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
 import com.andres.mariposita3d.Service.EspecieMariposaService;
-import com.andres.mariposita3d.Service.ObservacionService;
 
 @Controller
 public class ViewController {
 
     private final EspecieMariposaService butterflyService;
-    private final ObservacionService observacionService;
 
-    public ViewController(EspecieMariposaService butterflyService, ObservacionService observacionService) {
+    public ViewController(EspecieMariposaService butterflyService) {
         this.butterflyService = butterflyService;
-        this.observacionService = observacionService;
     }
 
     @GetMapping("/main")
