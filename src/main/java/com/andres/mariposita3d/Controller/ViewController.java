@@ -51,4 +51,15 @@ public class ViewController {
         return "Admin/registroMariposa";
     }
 
+    @GetMapping("/user/mapa")
+    @PreAuthorize("hasRole('USER')")
+    public String userMapa() {
+        return "User/mapa";
+    }
+
+    @GetMapping("/admin/mapa")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminMapa() {
+        return "Admin/mapa";
+    }
 }
