@@ -1,21 +1,15 @@
 package com.andres.mariposita3d.Controller;
 
-import com.andres.mariposita3d.Collection.Observacion;
-import com.andres.mariposita3d.Collection.Usuario;
-import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
-import com.andres.mariposita3d.Service.EspecieMariposaService;
-import com.andres.mariposita3d.Service.ObservacionService;
+import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
+import com.andres.mariposita3d.Service.EspecieMariposaService;
+import com.andres.mariposita3d.Service.ObservacionService;
 
 @Controller
 public class ViewController {
