@@ -142,7 +142,7 @@ public class EspecieMariposaService {
         System.out.println("Funciono?");
 
         Ubicacion ubicacion = ubicacionRepository.findById(
-                data.getUbicacionRecoleccionId()).orElseThrow(() -> new NoSuchElementException("Ubicación asociada no encontrada con ID: " + data.getUbicacionRecoleccionId())
+                new ObjectId(data.getUbicacionRecoleccionId())).orElseThrow(() -> new NoSuchElementException("Ubicación asociada no encontrada con ID: " + data.getUbicacionRecoleccionId())
         );
 
         ubicacion.setDepartamento(data.getDepartamento());

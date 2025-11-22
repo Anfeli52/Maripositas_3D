@@ -3,6 +3,7 @@ package com.andres.mariposita3d.Service;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +24,13 @@ public class UbicacionService implements IUbicacionService {
 
     @Override
     public Optional<Ubicacion> findById(String id) {
-        return repository.findById(id);
+        return repository.findById(new ObjectId(id));
     }
 
     @Override
     public Ubicacion save(Ubicacion ubicacion) {
         // Si no viene el campo GeoJSON, y sí viene lat/lon, construimos el GeoPoint
-        if ((ubicacion.getGeolocalizacionGeojson() == null
-                || ubicacion.getGeolocalizacionGeojson().getCoordinates() == null)
-                && ubicacion.getGeolocalizacion() != null) {
-
+        if ((ubicacion.getGeolocalizacionGeojson() == null || ubicacion.getGeolocalizacionGeojson().getCoordinates() == null) && ubicacion.getGeolocalizacion() != null) {
             Double lat = ubicacion.getGeolocalizacion().getLatitud();
             Double lon = ubicacion.getGeolocalizacion().getLongitud();
 
@@ -46,8 +44,8 @@ public class UbicacionService implements IUbicacionService {
 
     @Override
     public void delete(String id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (repository.existsById(new ObjectId(id))) {
+            repository.deleteById(new ObjectId(id));
         }
     }
 }

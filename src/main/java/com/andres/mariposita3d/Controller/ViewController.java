@@ -21,7 +21,6 @@ import com.andres.mariposita3d.DTO.MariposaDetalleDTO;
 import com.andres.mariposita3d.Enum.TipoEspecie;
 import com.andres.mariposita3d.Service.EspecieMariposaService;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
