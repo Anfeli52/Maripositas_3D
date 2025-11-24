@@ -118,7 +118,7 @@ function openModalUpdateButterfly(butterflyId) {
 
 const USER_MODAL_ID = 'editUserModal'; 
 const USER_FORM_ID = 'editUserForm';   
-var USER_API_URL;
+var USER_API_URL = "/api/usuarios";
 
 function loadUserDataToForm(data) {
     document.getElementById("user-edit-id").value = data.id;
